@@ -12,6 +12,8 @@ HOMEPAGE="http://code.google.com/p/py-bcrypt/"
 
 SRC_URI="http://py-bcrypt.googlecode.com/files/py-bcrypt-0.2.tar.gz"
 
+DEPEND="dev-python/setuptools"
+
 LICENSE="BSD"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"

@@ -6,17 +6,18 @@ PYTHON_DEPEND="2"
 SUPPORT_PYTHON_ABIS="1"
 
 inherit distutils
-inherit git-2
 
-DESCRIPTION="an AMQP interface for python"
-HOMEPAGE="http://kombu.readthedocs.org/"
+DESCRIPTION="AMQP Messaging Framework for Python"
+HOMEPAGE="http://kombu.readthedocs.org/ https://github.com/ask/kombu"
 
-# tarball exists (kind of...) but we get a messy filename from it
-# so instead we pull the github repository (not ideal but works)
-#SRC_URI="https://github.com/celery/kombu/tarball/v1.5.1"
+SRC_URI="mirror://pypi/${PN:0:1}/${PN}/${P}.tar.gz"
 
-EGIT_REPO_URI="https://github.com/celery/kombu.git"
-EGIT_COMMIT="63284ce01fef6e644e0f4679dbd0376975e5d17f"
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  
+# dependencies are likely to be incomplete or not restrictive enough
+# this library ebuild has been added for rhodecode which may have restricted them in    
+# another way, you are encouraged to submit corrections to gentoo-overlay@megacoffee.net
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+DEPEND="dev-python/setuptools"
 
 LICENSE="BSD"
 SLOT="0"
@@ -24,3 +25,6 @@ KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 RESTRICT_PYTHON_ABIS="3.*"
+
+# NOTE: the official ebuilds for later versions of Celery contain some more steps
+
