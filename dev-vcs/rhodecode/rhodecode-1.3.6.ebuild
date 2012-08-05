@@ -10,8 +10,8 @@ inherit distutils
 DESCRIPTION="a web-based frontend and middleware to Mercurial repositories"
 HOMEPAGE="http://rhodecode.org/"
 
-#SRC_URI="https://rhodecode.org/rhodecode/archive/edfff9f37916389144d3a3644d0a7d7adfd79b11.zip?subrepos=true"
-SRC_URI="https://rhodecode.org/rhodecode/archive/edfff9f37916389144d3a3644d0a7d7adfd79b11.zip"
+#SRC_URI="https://secure.rhodecode.org/rhodecode/archive/edfff9f37916389144d3a3644d0a7d7adfd79b11.zip?subrepos=true"
+SRC_URI="https://secure.rhodecode.org/rhodecode/archive/edfff9f37916389144d3a3644d0a7d7adfd79b11.zip"
 
 DEPEND=">=dev-vcs/mercurial-2.2.1
         <dev-vcs/mercurial-2.3
