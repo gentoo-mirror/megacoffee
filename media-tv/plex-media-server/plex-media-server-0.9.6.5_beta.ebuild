@@ -54,11 +54,16 @@ pkg_preinst() {
 	# now copy to image directory for actual installation
 	cp -R data/* ${D}
 
-	# last but not least make sure the logging directory is created
+	# make sure the logging directory is created
 	mkdir ${D}var
 	mkdir ${D}var/log
 	mkdir ${D}var/log/pms
 	chown plex:plex ${D}var/log/pms
+
+	# also make sure the default library folder is pre created with correct permissions
+	mkdir ${D}var/lib
+	mkdir ${D}var/lib/plexmediaserver
+	chown plex:plex ${D}var/lib/plexmediaserver
 
 	einfo "Stopping running instances of Media Server"
 	if [ -e "${INIT_SCRIPT}" ]; then
