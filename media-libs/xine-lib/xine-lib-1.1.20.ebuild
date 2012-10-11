@@ -24,7 +24,7 @@ HOMEPAGE="http://xine.sourceforge.net"
 
 LICENSE="GPL-2"
 SLOT="1"
-KEYWORDS="~alpha amd64 arm hppa ~ia64 ppc ppc64 ~sparc x86 ~x86-fbsd"
+KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd"
 
 IUSE="aalib libcaca win32codecs nls +css +X directfb +vorbis +alsa sdl speex +theora ipv6 altivec opengl aac fbcon +xv xvmc samba dxr3 vidix mng flac oss +v4l xinerama vcd +a52 +mad imagemagick +dts +modplug gtk pulseaudio mmap truetype wavpack +musepack +xcb jack real +vis"
 

@@ -1,0 +1,5 @@
+# Daniel Neugebauer <dneuge@energiequant.de> (11 Oct 2012)
+# for gentoo-overlay.megacoffee.net
+# ebuild was restored from official portage tree after deletion and should
+# only be used as a last resort
+=media-libs/xine-lib-1.1.20
