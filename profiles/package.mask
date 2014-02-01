@@ -3,3 +3,14 @@
 # ebuild was restored from official portage tree after deletion and should
 # only be used as a last resort
 =media-libs/xine-lib-1.1.20
+
+# Daniel Neugebauer <dneuge@energiequant.de> (1 Feb 2014)
+# for gentoo-overlay.megacoffee.net
+#
+# py-cashew has officially been broken beyond repair by
+# API changes. It is advised to use the plasmoid
+# "I Hate The Cashew" instead. Please see:
+# https://github.com/benoit-monin/Py-Cashew/issues/3
+#
+# This ebuild will be removed some time after June 2014.
+kde-misc/py-cashew
