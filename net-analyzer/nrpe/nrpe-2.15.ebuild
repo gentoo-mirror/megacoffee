@@ -1,4 +1,4 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/net-analyzer/nrpe/nrpe-2.14.ebuild,v 1.8 2013/03/09 19:09:06 ago Exp $
 
@@ -12,7 +12,8 @@ SRC_URI="mirror://sourceforge/nagios/${P}.tar.gz"
 
 LICENSE="GPL-2+"
 SLOT="0"
-KEYWORDS="alpha amd64 hppa ppc ppc64 sparc x86"
+#KEYWORDS="alpha amd64 hppa ppc ppc64 sparc x86"
+KEYWORDS="~amd64"
 IUSE="command-args ssl tcpd minimal"
 
 DEPEND="ssl? ( dev-libs/openssl )
@@ -33,7 +34,7 @@ pkg_setup() {
 
 src_prepare() {
 	# Add support for large output,
-	# http://opsview-blog.opsera.com/dotorg/2008/08/enhancing-nrpe.html
+	# http://www.opsview.com/whats-new/blog/enhancing-nrpe-large-output
 	epatch "${FILESDIR}"/${P}-multiline.patch
 	# fix configure, among others #326367, #397603
 	epatch "${FILESDIR}"/${P}-tcpd-et-al.patch
