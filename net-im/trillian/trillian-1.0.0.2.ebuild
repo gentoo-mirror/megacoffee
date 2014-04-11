@@ -7,7 +7,7 @@ URI_PRE="http://www.trillian.im/get/linux/beta/apt/dists/stable/main/binary-"
 SRC_URI="x86? ( ${URI_PRE}i386/trillian_${PV}_i386.deb )
 	amd64? ( ${URI_PRE}amd64/trillian_${PV}_amd64.deb )"
 
-DESCRIPTION="Trillian is a multi-platform multi-protocol chat client."
+DESCRIPTION="Trillian is a multi-platform multi-protocol chat client. Attention: you'll need a pro account to use trillian for now!"
 HOMEPAGE="http://www.trillian.im"
 KEYWORDS="-* ~x86 ~amd64"
 SLOT="0"
