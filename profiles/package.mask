@@ -14,3 +14,16 @@
 #
 # This ebuild will be removed some time after June 2014.
 kde-misc/py-cashew
+
+# Daniel Neugebauer <dneuge@energiequant.de> (12 Jul 2014)
+# for gentoo-overlay.megacoffee.net
+#
+# RhodeCode changed to a semi-commercial license back in 2013 which was the
+# main reason why this ebuild was abandoned. It should no longer be used due
+# to it's age and high amount of dependencies on outdated components.
+#
+# There's now a fork called Kallithea based on the more recent RhodeCode 2.2
+# GPL-licensed part. Kallithea as a whole is licensed GPLv3. We will try to
+# supply a virtualenv-based ebuild for it shortly (eliminating the need for
+# globally installed dependencies).
+dev-vcs/rhodecode
