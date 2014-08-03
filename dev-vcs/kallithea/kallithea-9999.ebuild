@@ -6,6 +6,7 @@ PYTHON_DEPEND="2"
 SUPPORT_PYTHON_ABIS="1"
 
 inherit mercurial
+inherit user
 
 DESCRIPTION="a web-based frontend and middleware to Mercurial and Git repositories"
 HOMEPAGE="https://kallithea-scm.org/"
@@ -24,8 +25,15 @@ IUSE=""
 
 RESTRICT_PYTHON_ABIS="3.*"
 
+installDataPath="/var/lib/kallithea"
 installBasePath="/opt/kallithea"
 virtualenvActivationPath="bin/activate"
+
+pkg_setup() {
+	# create user and group
+	enewgroup kallithea
+	enewuser kallithea -1 -1 "${installDataPath}" kallithea 
+}
 
 src_compile() {
 	# not really compiling anything
@@ -42,12 +50,52 @@ src_compile() {
 	# pylonshq.com is dead, remove from config
 	sed -e 's/\(find_links\s*=\s*http:\/\/www.pylonshq.com\/\)/;\1/' -i setup.cfg
 	
+	# WORKAROUND:
+	# if we don't install anyjson via PIP we will get a sandbox violation on second run
+	# (after fixing pylonshq.com for Pylons EGG-INFO)
+	# see: https://groups.google.com/forum/#!msg/rhodecode/agjXi2JeDZQ/LzFJ6EAsk9AJ
+	pip install 'anyjson>=0.3.1'
+	
 	# perform automatic installation, includes dependencies
 	echo
 	echo "===> output by Kallithea's setup.py"
-	python setup.py install || die "Automatic installation failed, please check above output."
+	python setup.py install
+	retval=$?
 	echo "<=== Kallithea's setup.py is done, resuming ebuild code"
 	echo
+	
+	# WORKAROUND:
+	# pylonshq.com may still have been tried to be accessed and failed
+	# check if that's the case and retry with a patched egg info file
+	if [ ${retval} -ne 0 ]; then
+		pylonsPath="${realWorkDir}/dist/v/lib/python2.7/site-packages/Pylons-1.0-py2.7.egg"
+		#if [ ! -e "${pylonsPath}/pylons" ] && [ -e "${pylonsPath}/EGG-INFO" ]; then
+		if [ ! -e "${realWorkDir}/dist/v/lib/python2.7/site-packages/pylons" ] && [ -e "${realWorkDir}/dist/v/lib/python2.7/site-packages/Pylons-1.0-py2.7.egg/EGG-INFO" ]; then
+			# gnoar... it really smells like pylonshq.com...
+			sed -e 's#^http://www.pylonshq.com/.*##' -i "${pylonsPath}/EGG-INFO/dependency_links.txt"
+			
+			# prepare to try again (sandbox violation if not done)
+			# TODO: check if still required
+			source /etc/profile
+			cd "${realWorkDir}"
+			source "dist/v/${virtualenvActivationPath}"
+			
+			echo "Retrying installation with removed pylonshq.com URL..."
+			echo
+			echo "===> output by Kallithea's setup.py"
+			python setup.py install || die "Automatic installation failed, please check above output. (failed after fixing Pylons dependency URL)"
+			echo "<=== Kallithea's setup.py is done, resuming ebuild code"
+		else
+			# some other error on first run
+			die "Automatic installation failed, please check above output. (failed on first try)"
+		fi
+	fi
+	echo
+	
+	# create config
+	mkdir "${realWorkDir}/etc"
+	cd "${realWorkDir}/etc"
+	paster make-config Kallithea production.ini || die "unable to create configuration file"
 	
 	# rewrite virtualenv directory to later installation directory
 	oldIFS="${IFS}"
@@ -66,9 +114,17 @@ src_install() {
 	# QA: no need to have anything world-writable...
 	chmod o-w -R dist/v/lib/python2.7/site-packages/setuptools-0.9.8-py2.7.egg-info
 	
-	# just copy the virtualenv directory to /opt/kallithea
+	# install production.ini in /etc/kallithea
+	into /etc/kallithea
+	doins "${S}/etc/production.ini"
+	
+	# just copy the remaining virtualenv directory to /opt/kallithea
 	dodir /opt
 	cp -aR "${S}/dist/v" "${D}${installBasePath}"
+
+	# create data directory
+	diropts -m2770 -okallithea -gkallithea
+	dodir "${installDataPath}"
 }
 
 pkg_postinst() {
@@ -108,6 +164,7 @@ config_menu() {
 	
 	#              1         2         3         4         5         6         7         8
 	#     12345678901234567890123456789012345678901234567890123456789012345678901234567890
+	echo
 	echo "==============================================================================="
 	echo
 	echo "Your options:"
@@ -120,6 +177,8 @@ config_menu() {
 	echo "     Kallithea should be able to run now, check documentation for more options"
 	echo "     such as setting up a task queue or full text search if you need it."
 	echo
+	
+	echo "TERM is ${TERM}"
 	
 	while [[ ! "${choice}" =~ ^[0-3]$ ]]; do
 		echo -n "Your choice? "
@@ -170,17 +229,19 @@ pkg_config() {
 				# terminal and shell need a reset or editor will be screwed up
 				source /etc/profile
 				reset
+				stty sane
 				
 				# open editor
 				if [[ "${EDITOR}" != "" ]] && [ -e "${EDITOR}" ]; then
-					${EDITOR} "${iniPath}"
+					TERM="xterm" ${EDITOR} "${iniPath}"
 				else
-					nano -w "${iniPath}"
+					TERM="xterm" nano -w "${iniPath}"
 				fi
 
 				# we better reset again...
 				source /etc/profile
 				reset
+				stty sane
 				;;
 			
 			*)	echo "invalid choice ${choice}"
