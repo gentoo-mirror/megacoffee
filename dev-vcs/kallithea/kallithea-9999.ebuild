@@ -27,6 +27,7 @@ RESTRICT_PYTHON_ABIS="3.*"
 
 installDataPath="/var/lib/kallithea"
 installBasePath="/opt/kallithea"
+installConfigPath="/etc/kallithea"
 virtualenvActivationPath="bin/activate"
 
 pkg_setup() {
@@ -108,23 +109,33 @@ src_compile() {
 		sed -e "s#${realWorkDir}/dist/v#${installBasePath}#" -i "${dirtyFile}"
 	done
 	IFS="${oldIFS}"
+	
+	# create WSGI file
+	cd "${realWorkDir}/etc"
+	cp "${FILESDIR}/production.wsgi" .
+	sed -e "s:###BASEDIR###:${installBasePath}:" -i production.wsgi
+	sed -e "s:###DATADIR###:${installDataPath}:" -i production.wsgi
+	sed -e "s:###CONFDIR###:${installConfigPath}:" -i production.wsgi
 }
 
 src_install() {
 	# QA: no need to have anything world-writable...
 	chmod o-w -R dist/v/lib/python2.7/site-packages/setuptools-0.9.8-py2.7.egg-info
 	
-	# install production.ini in /etc/kallithea
-	into /etc/kallithea
-	doins "${S}/etc/production.ini"
-	
-	# just copy the remaining virtualenv directory to /opt/kallithea
+	# just copy the virtualenv directory to /opt/kallithea
 	dodir /opt
 	cp -aR "${S}/dist/v" "${D}${installBasePath}"
-
+	
+	# install configuration files to /etc/kallithea
+	diropts -m750 -oroot -gkallithea
+	insopts -m640 -oroot -gkallithea
+	insinto "${installConfigPath}"
+	doins "${S}/etc/production.ini"
+	doins "${S}/etc/production.wsgi"
+	
 	# create data directory
 	diropts -m2770 -okallithea -gkallithea
-	dodir "${installDataPath}"
+	keepdir "${installDataPath}"
 }
 
 pkg_postinst() {
