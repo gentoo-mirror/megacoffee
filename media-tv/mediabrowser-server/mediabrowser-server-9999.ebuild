@@ -52,7 +52,7 @@ src_install() {
 	#insinto ${INSTALL_DIR}
 	#doins -r "${S}/MediaBrowser.Server.Mono/bin/Release Mono/*"
 	cp -R ${S}/MediaBrowser.Server.Mono/bin/Release\ Mono/* ${D}${INSTALL_DIR}/ || die "install failed, possibly compile did not succeed earlier?"
-	chmod mediabrowser:mediabrowser -R ${D}${INSTALL_DIR}
+	chown mediabrowser:mediabrowser -R ${D}${INSTALL_DIR}
 
 	einfo "prepare data directory"
 	dodir ${DATA_DIR}
