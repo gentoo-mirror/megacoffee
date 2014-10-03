@@ -21,7 +21,8 @@ RESTRICT="mirror test"
 RDEPEND=">=dev-lang/mono-3.2.7
 	>=dev-dotnet/libgdiplus-2.10
 	media-video/ffmpeg[vpx]
-	>=media-libs/libmediainfo-0.7"
+	>=media-libs/libmediainfo-0.7
+	>=media-libs/libwebp-0.4.1"
 DEPEND="app-arch/unzip ${RDEPEND}"
 
 INSTALL_DIR="/opt/mediabrowser-server"
