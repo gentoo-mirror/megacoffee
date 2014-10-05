@@ -10,13 +10,16 @@ DESCRIPTION="MediaBrowser Server is a software that indexes a lot of different k
 HOMEPAGE="http://mediabrowser.tv/"
 KEYWORDS="-* ~9999"
 EGIT_REPO_URI="https://github.com/MediaBrowser/MediaBrowser/"
-#EGIT_REPO_URI="https://github.com/gsnerf/MediaBrowser/"
 SLOT="0"
 LICENSE="GPL-2"
 IUSE=""
 RESTRICT="mirror test"
 
-RDEPEND=">=dev-lang/mono-3.2.0 >=dev-dotnet/libgdiplus-2.10 >=media-libs/libmediainfo-0.7"
+RDEPEND=">=dev-lang/mono-3.2.7
+	>=dev-dotnet/libgdiplus-2.10
+	media-video/ffmpeg[vpx]
+	>=media-libs/libmediainfo-0.7
+	>=media-libs/libwebp-0.4.1[jpeg]"
 DEPEND="app-arch/unzip ${RDEPEND}"
 
 INSTALL_DIR="/opt/mediabrowser-server"
@@ -24,11 +27,11 @@ DATA_DIR="/usr/lib/mediabrowser-server"
 STARTUP_LOG="/var/log/mediabrowser_start.log"
 INIT_SCRIPT="${ROOT}/etc/init.d/mediabrowser-server"
 
-# gentoo expects a specific subfolder in the working directory for the extracted source, so simply extracting won't work here
-#src_unpack() {
-#	unpack ${A}
-#	mv MediaBrowser-master mediabrowser-server-9999
-#}
+# we don't want to use the third party drivers, so we patch the config files to use system ones instead
+# attention: do NOT remove the third party libraries before compiling as the build process might fail!
+src_prepare() {
+	epatch "${FILESDIR}/system_libraries_1.patch"
+}
 
 src_compile() {
 	einfo "updating root certificates for mono certificate store"
@@ -46,12 +49,13 @@ src_install() {
 
 	einfo "installing compiled files"
 	diropts -omediabrowser -gmediabrowser
-	#insopts -omediabrowser -gmediabrowser
 	dodir ${INSTALL_DIR}
-	#insinto ${INSTALL_DIR}
-	#doins -r "${S}/MediaBrowser.Server.Mono/bin/Release Mono/*"
 	cp -R ${S}/MediaBrowser.Server.Mono/bin/Release\ Mono/* ${D}${INSTALL_DIR}/ || die "install failed, possibly compile did not succeed earlier?"
 	chown mediabrowser:mediabrowser -R ${D}${INSTALL_DIR}
+
+	# as we use the system libraries, we delete the local ones now as we couldn't do it before
+	rm -R ${D}${INSTALL_DIR}/libwebp
+	rm -R ${D}${INSTALL_DIR}/MediaInfo
 
 	einfo "prepare data directory"
 	dodir ${DATA_DIR}
@@ -60,7 +64,7 @@ src_install() {
 pkg_setup() {
 	einfo "creating user for MediaBrowser"
 	enewgroup mediabrowser
-	enewuser mediabrowser -1 /bin/bash /opt/mediabrowser "mediabrowser" --system
+	enewuser mediabrowser -1 /bin/bash ${INSTALL_DIR} "mediabrowser" --system
 }
 
 #pkg_preinst() {
@@ -98,8 +102,8 @@ pkg_prerm() {
 }
 
 pkg_postinst() {
-	einfo "MediaBrowser-server was installed to /opt/mediabrowser, to start please use the init script provided."
-	einfo "All data generated and used by MediaBrowser can be found at /var/opt/mediabrowser after the first start."
+	einfo "MediaBrowser-server was installed to ${INSTALL_DIR}, to start please use the init script provided."
+	einfo "All data generated and used by MediaBrowser can be found at ${DATA_DIR} after the first start."
 	einfo ""
 	einfo "If you just updated from an earlier version make sure to restart the service!"
 }

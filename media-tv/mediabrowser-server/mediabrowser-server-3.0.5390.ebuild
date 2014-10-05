@@ -8,7 +8,7 @@ inherit eutils user
 
 DESCRIPTION="MediaBrowser Server is a software that indexes a lot of different kinds of media and allows for them to be retrieved and played through the DLNA protocol on any device capable of processing them."
 HOMEPAGE="http://mediabrowser.tv/"
-KEYWORDS="-* ~amd64 ~x86 ~x86_64"
+KEYWORDS="-* ~arm ~amd64 ~x86"
 #EGIT_REPO_URI="https://github.com/MediaBrowser/MediaBrowser/"
 #EGIT_REPO_URI="https://github.com/gsnerf/MediaBrowser/"
 REVISION="c70ca517a1f450d28439cd45b9389bbb926a4adb"
