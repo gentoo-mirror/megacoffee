@@ -4,12 +4,15 @@
 
 EAPI="5"
 
-inherit eutils user git-r3
+inherit eutils user
 
 DESCRIPTION="MediaBrowser Server is a software that indexes a lot of different kinds of media and allows for them to be retrieved and played through the DLNA protocol on any device capable of processing them."
 HOMEPAGE="http://mediabrowser.tv/"
-KEYWORDS="-* ~9999"
-EGIT_REPO_URI="https://github.com/MediaBrowser/MediaBrowser/"
+KEYWORDS="-* ~arm ~amd64 ~x86"
+#EGIT_REPO_URI="https://github.com/MediaBrowser/MediaBrowser/"
+#EGIT_REPO_URI="https://github.com/gsnerf/MediaBrowser/"
+REVISION="80200363d2b6f60a89f09cbe3b939fc56eba3f7a"
+SRC_URI="https://github.com/MediaBrowser/MediaBrowser/archive/${REVISION}.zip"
 SLOT="0"
 LICENSE="GPL-2"
 IUSE=""
@@ -26,6 +29,12 @@ INSTALL_DIR="/opt/mediabrowser-server"
 DATA_DIR="/usr/lib/mediabrowser-server"
 STARTUP_LOG="/var/log/mediabrowser_start.log"
 INIT_SCRIPT="${ROOT}/etc/init.d/mediabrowser-server"
+
+# gentoo expects a specific subfolder in the working directory for the extracted source, so simply extracting won't work here
+src_unpack() {
+	unpack ${A}
+	mv MediaBrowser-${REVISION} mediabrowser-server-${PV}
+}
 
 # we don't want to use the third party drivers, so we patch the config files to use system ones instead
 # attention: do NOT remove the third party libraries before compiling as the build process might fail!
