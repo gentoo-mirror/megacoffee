@@ -48,7 +48,7 @@ src_unpack() {
 }
 
 src_prepare() {
-	return
+	epatch "${FILESDIR}/9-8-strict-prototypes.patch"
 }
 
 src_compile() {
