@@ -121,7 +121,7 @@ pkg_postinst() {
 	einfo " # grep VmallocUsed /proc/meminfo"
 	einfo ""
 	einfo "We are reloading udev rules now..."
-	/sbin/udevadm control --reload-rules || einfo " ... failed, you may want to check this before rebooting!"
+	/bin/udevadm control --reload-rules || einfo " ... failed, you may want to check this before rebooting!"
 }
 
 pkg_postrm() {
