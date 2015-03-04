@@ -17,10 +17,8 @@ IUSE=""
 RESTRICT="mirror test"
 
 RDEPEND=">=dev-lang/mono-3.2.7
-	>=dev-dotnet/libgdiplus-2.10
 	>=media-video/ffmpeg-2[vpx]
 	>=media-libs/libmediainfo-0.7
-	>=media-libs/libwebp-0.4.1[jpeg]
 	media-gfx/imagemagick[jpeg,jpeg2k,webp,png]"
 DEPEND="app-arch/unzip ${RDEPEND}"
 
