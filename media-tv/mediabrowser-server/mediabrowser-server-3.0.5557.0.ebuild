@@ -8,9 +8,8 @@ inherit eutils user git-r3
 
 DESCRIPTION="MediaBrowser Server is a software that indexes a lot of different kinds of media and allows for them to be retrieved and played through the DLNA protocol on any device capable of processing them."
 HOMEPAGE="http://mediabrowser.tv/"
-KEYWORDS="-* ~9999"
-EGIT_REPO_URI="https://github.com/MediaBrowser/MediaBrowser/"
-EGIT_BRANCH="dev"
+KEYWORDS="-* ~arm ~amd64 ~x86"
+SRC_URI="https://github.com/MediaBrowser/MediaBrowser/archive/${PV}.zip"
 SLOT="0"
 LICENSE="GPL-2"
 IUSE=""
@@ -27,6 +26,13 @@ INSTALL_DIR="/opt/mediabrowser-server"
 DATA_DIR="/usr/lib/mediabrowser-server"
 STARTUP_LOG="/var/log/mediabrowser_start.log"
 INIT_SCRIPT="${ROOT}/etc/init.d/mediabrowser-server"
+
+# gentoo expects a specific subfolder in the working directory for the extracted source, so simply extracting won't work here
+src_unpack() {
+        unpack ${A}
+        mv MediaBrowser-${PV} mediabrowser-server-${PV}
+}
+
 
 src_compile() {
 	einfo "updating root certificates for mono certificate store"
