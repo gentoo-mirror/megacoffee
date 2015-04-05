@@ -1,16 +1,16 @@
 #!/sbin/runscript
 
-PIDFILE="/tmp/mediabrowser-server.pid"
-PROGRAMDATA="/usr/lib/mediabrowser-server"
-#EXEC="mono-service2 -d /opt/mediabrowser-server/ -m mediabrowser-server -n mediabrowser-server /opt/mediabrowser-server/MediaBrowser.Server.Mono.exe -programdata ${PROGRAMDATA}"
-#EXEC="/opt/mediabrowser-server/start.sh"
+PIDFILE="/tmp/emby-server.pid"
+PROGRAMDATA="/usr/lib/emby-server"
+#EXEC="mono-service2 -d /opt/emby-server/ -m emby-server -n emby-server /opt/emby-server/MediaBrowser.Server.Mono.exe -programdata ${PROGRAMDATA}"
+#EXEC="/opt/emby-server/start.sh"
 EXEC="./MediaBrowser.Server.Mono.exe -programdata ${PROGRAMDATA} -ffmpeg /usr/bin/ffmpeg -ffprobe /usr/bin/ffprobe"
-EXEC_DIR="/opt/mediabrowser-server/"
-EXEC_USER="mediabrowser"
-LOG_FILE="/var/log/mediabrowser_start.log"
+EXEC_DIR="/opt/emby-server/"
+EXEC_USER="emby"
+LOG_FILE="/var/log/emby-server_start.log"
 
 start() {
-        ebegin "Starting MediaBrowser-Server"
+        ebegin "Starting Emby-Server"
         # we are starting the service (-x):
         # - in background with the given pid file (-m -p -b)
         # - as a specific user (-u)
@@ -20,7 +20,7 @@ start() {
 }
 
 stop() {
-        ebegin "Stopping MediaBrowser-Server"
+        ebegin "Stopping Emby-Server"
         start-stop-daemon -K -p ${PIDFILE}
         eend $?
 }

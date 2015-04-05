@@ -55,7 +55,6 @@ src_install() {
 	chown mediabrowser:mediabrowser -R ${D}${INSTALL_DIR}
 
 	# as we use the system libraries, we delete the local ones now as we couldn't do it before
-	rm -R ${D}${INSTALL_DIR}/libwebp
 	rm -R ${D}${INSTALL_DIR}/MediaInfo
 
 	einfo "prepare data directory"
