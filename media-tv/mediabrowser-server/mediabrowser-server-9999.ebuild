@@ -28,6 +28,13 @@ DATA_DIR="/usr/lib/mediabrowser-server"
 STARTUP_LOG="/var/log/mediabrowser_start.log"
 INIT_SCRIPT="${ROOT}/etc/init.d/mediabrowser-server"
 
+src_prepare() {
+        MAGICKWAND=$(ldconfig -p | grep MagickWand.*.so$ | cut -d" " -f4)
+        MAGICKWAND=${MAGICKWAND##*/}
+        einfo "adapting to imagemagick library to: ${MAGICKWAND}"
+        sed -i -e "s/\"libMagickWand-6.Q8.so\"/\"${MAGICKWAND}\"/" MediaBrowser.Server.Mono/ImageMagickSharp.dll.config || die "could not update libMagickWand reference!"
+}
+
 src_compile() {
 	einfo "updating root certificates for mono certificate store"
 	mozroots --import --sync
@@ -61,33 +68,6 @@ pkg_setup() {
 	enewgroup mediabrowser
 	enewuser mediabrowser -1 /bin/bash ${INSTALL_DIR} "mediabrowser" --system
 }
-
-#pkg_preinst() {
-	#cd ${D}
-	#einfo "preparing compiled package for install"
-	#mkdir -p opt/mediabrowser-server
-	#cp -R  ${WORKDIR}/${P}/MediaBrowser.Server.Mono/bin/Release\ Mono/* opt/mediabrowser-server/ || die
-	#cp ${FILESDIR}/start.sh opt/mediabrowser-server/start.sh
-	#chown mediabrowser:mediabrowser -R opt/mediabrowser-server
-	#chmod 755 opt/mediabrowser-server/start.sh
-
-	#einfo "adding init script"
-	#mkdir -p etc/init.d
-	#cp "${FILESDIR}"/initd_1 etc/init.d/mediabrowser-server
-	#chmod 755 etc/init.d/mediabrowser-server
-	#mkdir -p var/log
-	#touch var/log/mediabrowser_start.log
-	#chown mediabrowser:mediabrowser var/log/mediabrowser_start.log
-
-	#einfo "preparing data directory"
-	#mkdir -p usr/lib/mediabrowser-server
-	#chown mediabrowser:mediabrowser usr/lib/mediabrowser-server
-
-	#einfo "Stopping running instances of MediaBrowser Server for actual install"
-	#if [ -e "${INIT_SCRIPT}" ]; then
-	#	${INIT_SCRIPT} stop
-	#fi
-#}
 
 pkg_prerm() {
 	einfo "Stopping running instances of Media Server"

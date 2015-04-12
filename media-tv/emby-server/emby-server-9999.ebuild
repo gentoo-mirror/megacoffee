@@ -28,6 +28,13 @@ DATA_DIR="/usr/lib/emby-server"
 STARTUP_LOG="/var/log/emby-server_start.log"
 INIT_SCRIPT="${ROOT}/etc/init.d/emby-server"
 
+src_prepare() {
+        MAGICKWAND=$(ldconfig -p | grep MagickWand.*.so$ | cut -d" " -f4)
+        MAGICKWAND=${MAGICKWAND##*/}
+        einfo "adapting to imagemagick library to: ${MAGICKWAND}"
+        sed -i -e "s/\"libMagickWand-6.Q8.so\"/\"${MAGICKWAND}\"/" MediaBrowser.Server.Mono/ImageMagickSharp.dll.config || die "could not update libMagickWand reference!"
+}
+
 src_compile() {
 	einfo "updating root certificates for mono certificate store"
 	mozroots --import --sync
