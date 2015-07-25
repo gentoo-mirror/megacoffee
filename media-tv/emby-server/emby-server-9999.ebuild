@@ -9,7 +9,7 @@ inherit eutils user git-r3
 DESCRIPTION="Emby Server (formerly known as MediaBrowser Server) is a software that indexes a lot of different kinds of media and allows for them to be retrieved and played through the DLNA protocol on any device capable of processing them."
 HOMEPAGE="http://emby.media/"
 KEYWORDS="-* ~9999"
-EGIT_REPO_URI="https://github.com/MediaBrowser/MediaBrowser/"
+EGIT_REPO_URI="https://github.com/MediaBrowser/Emby/"
 EGIT_BRANCH="dev"
 SLOT="0"
 LICENSE="GPL-2"
@@ -31,7 +31,7 @@ INIT_SCRIPT="${ROOT}/etc/init.d/emby-server"
 src_prepare() {
         MAGICKWAND=$(ldconfig -p | grep MagickWand.*.so$ | cut -d" " -f4)
         MAGICKWAND=${MAGICKWAND##*/}
-        einfo "adapting to imagemagick library to: ${MAGICKWAND}"
+        einfo "adapting to imagemagick library: ${MAGICKWAND}"
         sed -i -e "s/\"libMagickWand-6.Q8.so\"/\"${MAGICKWAND}\"/" MediaBrowser.Server.Mono/ImageMagickSharp.dll.config || die "could not update libMagickWand reference!"
 }
 
