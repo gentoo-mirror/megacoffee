@@ -20,16 +20,18 @@ DESCRIPTION="a web-based frontend and middleware to Mercurial and Git repositori
 HOMEPAGE="https://kallithea-scm.org/"
 SRC_URI="https://pypi.python.org/packages/source/K/Kallithea/Kallithea-${PV}.tar.bz2"
 
-RDEPEND="dev-python/virtualenv"
+IUSE="+sqlite"
 
-DEPEND="${RDEPEND} \
-	app-arch/unzip \
+RDEPEND="dev-python/virtualenv
+	sqlite? ( dev-lang/python:2.7[sqlite] )"
+
+DEPEND="${RDEPEND}
+	app-arch/unzip
 	sys-apps/sed"
 
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE=""
 
 RESTRICT_PYTHON_ABIS="3.*"
 
