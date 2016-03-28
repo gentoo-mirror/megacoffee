@@ -59,7 +59,7 @@ src_compile() {
 	realWorkDir=$(pwd)
 	
 	# create new virtual environment
-	virtualenv --no-site-packages dist/v
+	virtualenv --python=python2.7 --no-site-packages dist/v
 	
 	# activate environment
 	source "dist/v/${virtualenvActivationPath}"
