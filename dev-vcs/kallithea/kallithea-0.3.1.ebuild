@@ -66,20 +66,20 @@ src_compile() {
 	
 	# WORKAROUND:
 	# we need to make sure we have a current version of setuptools to install Kallithea's dependencies
-	pip install 'setuptools>=17.1'
+	pip2.7 install 'setuptools>=17.1' || die "Failed to install setuptools, aborting!"
 
 	# WORKAROUND:
 	# _after_ installation on --config we need a certain version of paster to create the initial config file...
-	pip install 'PasteScript==2.0.2'
+	pip2.7 install 'PasteScript==2.0.2' || die "Failed to install PasteScript, aborting!"
 	
 	# WORKAROUND:
 	# Kallithea's attempt to install Mercurial fails, so we do it first
-	pip install 'mercurial>=2.9,<3.8'
+	pip2.7 install 'mercurial>=2.9,<3.8' || die "Failed to install Mercurial, aborting!"
 	
 	# perform automatic installation, includes dependencies
 	echo
 	echo "===> output by Kallithea's setup.py"
-	python setup.py install
+	python2.7 setup.py install
 	retval=$?
 	echo "<=== Kallithea's setup.py is done, resuming ebuild code"
 	echo
