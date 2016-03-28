@@ -20,14 +20,17 @@ DESCRIPTION="a web-based frontend and middleware to Mercurial and Git repositori
 HOMEPAGE="https://kallithea-scm.org/"
 SRC_URI="https://pypi.python.org/packages/source/K/Kallithea/Kallithea-${PV}.tar.bz2"
 
-IUSE="+sqlite +git postgres"
+IUSE="+git mysql postgres sqlite"
+REQUIRED_USE="|| ( mysql postgres sqlite )"
 
 RDEPEND="
 	dev-python/virtualenv
 	git? ( dev-vcs/git )
+	mysql? ( dev-db/mysql )
 	postgres? ( dev-db/postgresql )
 	sqlite? ( dev-lang/python:2.7[sqlite] )
 "
+	#mysql? ( virtual/libmysqlclient )
 
 DEPEND="${RDEPEND}
 	app-arch/unzip
@@ -87,6 +90,13 @@ src_compile() {
 	# at the time of writing 2.6.1 is current, so we limit the version to <2.7
 	if use postgres ; then
 		pip2.7 install 'psycopg2>=2.6,<2.7' || die "Failed to install psycopg2 (required for PostgreSQL support), aborting!"
+	fi
+	
+	# WORKAROUND:
+	# Kallithea needs MySQLdb for MySQL support which is not currently listed as a dependency?!
+	# at the time of writing 1.2.5 is current, so we limit the version to <1.3
+	if use mysql ; then
+		pip2.7 install 'MySQL-python>=1.2,<1.3' || die "Failed to install MySQL-python (required for MySQL support), aborting!"
 	fi
 	
 	# perform automatic installation, includes dependencies
