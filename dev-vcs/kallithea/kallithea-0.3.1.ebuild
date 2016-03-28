@@ -20,10 +20,13 @@ DESCRIPTION="a web-based frontend and middleware to Mercurial and Git repositori
 HOMEPAGE="https://kallithea-scm.org/"
 SRC_URI="https://pypi.python.org/packages/source/K/Kallithea/Kallithea-${PV}.tar.bz2"
 
-IUSE="+sqlite"
+IUSE="+sqlite +git"
 
-RDEPEND="dev-python/virtualenv
-	sqlite? ( dev-lang/python:2.7[sqlite] )"
+RDEPEND="
+	dev-python/virtualenv
+	git? ( dev-vcs/git )
+	sqlite? ( dev-lang/python:2.7[sqlite] )
+"
 
 DEPEND="${RDEPEND}
 	app-arch/unzip
@@ -102,6 +105,12 @@ src_compile() {
 			rm tmp.extract.zip
 		fi
 	done
+	
+	# disable Git support according to manual
+	# see: http://kallithea.readthedocs.org/en/0.3.1/usage/vcs_support.html
+	if ! use git ; then
+		sed -i -e "/^BACKENDS\s*=\s*{/,/}/ s/^\(\s*\)\('git'\)/\1#\2/" Kallithea-${PV}-py2.7.egg/kallithea/__init__.py || die 'Failed to disable git support, aborting...'
+	fi
 	
 	# create config
 	mkdir "${realWorkDir}/etc"
@@ -189,9 +198,16 @@ src_install() {
 	insopts -m644 -oroot -gkallithea
 	doins "${S}/etc/production.wsgi"
 	
-	# create data directory
+	# create data directory and subdirectories
 	diropts -m2770 -okallithea -gkallithea
 	keepdir "${installDataPath}"
+	keepdir "${installDataPath}/data"
+	keepdir "${installDataPath}/data/cache"
+	keepdir "${installDataPath}/data/cache/data"
+	keepdir "${installDataPath}/data/cache/lock"
+	keepdir "${installDataPath}/data/index"
+	keepdir "${installDataPath}/repositories"
+	keepdir "${installDataPath}/tarballcache"
 }
 
 pkg_postinst() {
