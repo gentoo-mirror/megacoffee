@@ -20,11 +20,12 @@ DESCRIPTION="a web-based frontend and middleware to Mercurial and Git repositori
 HOMEPAGE="https://kallithea-scm.org/"
 SRC_URI="https://pypi.python.org/packages/source/K/Kallithea/Kallithea-${PV}.tar.bz2"
 
-IUSE="+sqlite +git"
+IUSE="+sqlite +git postgres"
 
 RDEPEND="
 	dev-python/virtualenv
 	git? ( dev-vcs/git )
+	postgres? ( dev-db/postgresql )
 	sqlite? ( dev-lang/python:2.7[sqlite] )
 "
 
@@ -80,6 +81,13 @@ src_compile() {
 	# WORKAROUND:
 	# Kallithea's attempt to install Mercurial fails, so we do it first
 	pip2.7 install 'mercurial>=2.9,<3.8' || die "Failed to install Mercurial, aborting!"
+	
+	# WORKAROUND:
+	# Kallithea needs psycopg2 for PostgreSQL support which is not currently listed as a dependency?!
+	# at the time of writing 2.6.1 is current, so we limit the version to <2.7
+	if use postgres ; then
+		pip2.7 install 'psycopg2>=2.6,<2.7' || die "Failed to install psycopg2 (required for PostgreSQL support), aborting!"
+	fi
 	
 	# perform automatic installation, includes dependencies
 	echo
