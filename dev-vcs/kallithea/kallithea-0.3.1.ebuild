@@ -22,7 +22,9 @@ SRC_URI="https://pypi.python.org/packages/source/K/Kallithea/Kallithea-${PV}.tar
 
 RDEPEND="dev-python/virtualenv"
 
-DEPEND="${RDEPEND}"
+DEPEND="${RDEPEND} \
+	app-arch/unzip \
+	sys-apps/sed"
 
 LICENSE="GPL-3"
 SLOT="0"
@@ -38,6 +40,7 @@ virtualenvActivationPath="bin/activate"
 
 urlDocumentationSetup="http://kallithea.readthedocs.org/en/${PV}/setup.html"
 urlDocumentationRhodeCode="http://kallithea.readthedocs.org/en/${PV}/readme.html#converting-from-rhodecode"
+urlDocumentationMegacoffee="http://gentoo-overlay.megacoffee.net/s/docs-kallithea-apache-mod_wsgi"
 
 pkg_setup() {
 	# create user and group
@@ -98,8 +101,6 @@ src_compile() {
 		fi
 	done
 	
-	# TODO: remove dummy config & directory
-	
 	# create config
 	mkdir "${realWorkDir}/etc"
 	cd "${realWorkDir}/etc"
@@ -109,7 +110,46 @@ src_compile() {
 	sed -i -e "s/%(here)s\(\/\(tarballcache\|data\)\)/${installDataPath//\//\\/}\1/" production.ini
 	sed -i -e "s/%(here)s\(\/kallithea.db\)/${installDataPath//\//\\/}\1/" production.ini
 	
-	# TODO: only log WARN by default?
+	# rewrite config to only log from WARN level to "console"
+	# By Kallithea defaults, handler_console logs everything from INFO level to "console".
+	# As mod_wsgi logs everything from "console" to error_log this results in a huge amount
+	# of unnecessary log entries which we would like to prevent.
+	# NOTE: As sed syntax is hard to read... this replacement rule is prefixed with an "address" which
+	#       is being defined by two regexps, effectively restricting replacements just to the
+	#       handler_console section of our ini file.
+	sed -i -e '/^\[handler_console\]/,/^\[/ s/level\s*=\s*INFO/level = WARN/' production.ini
+	
+	# rewrite config to disable debug mode
+	# By default, Kallithea uses debug = true which should *NOT* be used except during development.
+	# See: http://kallithea.readthedocs.org/en/0.3.1/usage/debugging.html
+	sed -i -e '/^\[DEFAULT\]/,/^\[/ s/\(debug\s*=\s*\)true/\1false/' production.ini
+	
+	## (disabled, does not work from sandbox)
+	## maintain system-unique variables from previous production.ini if available
+	#previousProductionConfig="${installConfigPath}/production.ini"
+	#if [ -e "${previousProductionConfig}" ]; then
+	#	previousAppInstanceUUID="$(grep -oE '^\s*app_instance_uuid\s*=\s*[0-9a-f\-]+' /etc/kallithea/production.ini | cut -d'=' -f2 | tr -d ' ')"
+	#	previousBeakerSessionSecret="$(grep -oE '^\s*beaker\.session\.secret\s*=\s*[0-9a-f\-]+' "${previousProductionConfig}" | cut -d'=' -f2 | tr -d ' ')"
+	#	
+	#	if [ ! -z "${previousAppInstanceUUID}" ]; then
+	#		echo 'Transferring previous app instance UUID to new production.ini'
+	#		sed -i -e "s/^\(\s*app_instance_uuid\s*=\s*\).*/\1${previousAppInstanceUUID}/" production.ini
+	#	fi
+	#	
+	#	if [ ! -z "${previousBeakerSessionSecret}" ]; then
+	#		echo 'Transferring previous Beaker session secret to new production.ini'
+	#		sed -i -e "s/^\(\s*beaker\.session\.secret\s*=\s*\).*/\1${previousBeakerSessionSecret}/" production.ini
+	#	fi
+	#fi
+	
+	# remove newly generated UUID and Beaker session secret from config
+	# as user should configure that instead and config diffs don't show
+	# unnecessary stuff
+	sed -i -e "s/^\(\s*app_instance_uuid\s*=\).*/#\1 (run uuidgen and insert the returned UUID here)/" production.ini
+	sed -i -e "s/^\(\s*beaker\.session\.secret\s*=\).*/#\1 (run uuidgen and insert the returned UUID here)/" production.ini
+	
+	# rename production.ini as it requires more configuration and is hard to read
+	mv production.ini production.ini.example
 	
 	# rewrite virtualenv directory to later installation directory
 	oldIFS="${IFS}"
@@ -143,7 +183,7 @@ src_install() {
 	diropts -m750 -oroot -gkallithea
 	insopts -m640 -oroot -gkallithea
 	insinto "${installConfigPath}"
-	doins "${S}/etc/production.ini"
+	doins "${S}/etc/production.ini.example"
 	insopts -m644 -oroot -gkallithea
 	doins "${S}/etc/production.wsgi"
 	
@@ -156,8 +196,12 @@ pkg_postinst() {
 	#               1         2         3         4         5         6         7         8
 	#      12345678901234567890123456789012345678901234567890123456789012345678901234567890
 	einfo "An example configuration file has already been created so you don't need to run"
-	einfo "make-config again, see:"
-	einfo "    ${installConfigPath}/production.ini"
+	einfo "make-config again; please copy and edit carefully on first setup:"
+	einfo "    cp -a ${installConfigPath}/production.ini.example ${installConfigPath}/production.ini"
+	einfo "    \$EDITOR ${installConfigPath}/production.ini"
+	einfo ""
+	einfo "After updates, please compare what has changed and copy any necessary changes:"
+	einfo "    diff -u ${installConfigPath}/production.ini ${installConfigPath}/production.ini.example"
 	einfo ""
 	einfo "You still need to follow Kallithea's other setup steps according to the"
 	einfo "instructions at:"
@@ -168,6 +212,11 @@ pkg_postinst() {
 	einfo "you will have to run a dedicated shell and initialize the environment by running"
 	einfo ""
 	einfo "    source ${installBasePath}/${virtualenvActivationPath}"
+	einfo ""
+	einfo "We altered the default config slightly. It may be best to have a look at our"
+	einfo "short example on how to setup hosting with Apache and mod_wsgi, even if you"
+	einfo "prefer another method of hosting Kallithea:"
+	einfo "    ${urlDocumentationMegacoffee}"
 	einfo ""
 	#einfo "We can wrap those commands for you if you run (no prior activation needed):"
 	#einfo "    emerge --config =${CATEGORY}/${PF}"
