@@ -1,0 +1,11 @@
+--- a/blackmagic-desktop-video-9.8/usr/src/desktopvideo-9.8a2/blackmagic_iml.h	2014-10-19 15:27:24.042563486 +0200
++++ b/blackmagic-desktop-video-9.8/usr/src/desktopvideo-9.8a2/blackmagic_iml.h	2014-10-19 15:27:43.826053672 +0200
+@@ -42,7 +42,7 @@
+ 
+ /* Init and Startup */
+ extern int blackmagic_ioctl_private(void *, void *, unsigned int, unsigned long);
+-extern void *dl_alloc_driver();
++extern void *dl_alloc_driver(void);
+ extern int dl_start_driver(void *, void *, unsigned int* flags);
+ extern void *dl_create_and_init_user_client(void *, void *);
+ extern void dl_release_user_client(void *);

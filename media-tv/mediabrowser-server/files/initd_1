@@ -1,0 +1,32 @@
+#!/sbin/runscript
+
+PIDFILE="/tmp/mediabrowser-server.pid"
+PROGRAMDATA="/usr/lib/mediabrowser-server"
+#EXEC="mono-service2 -d /opt/mediabrowser-server/ -m mediabrowser-server -n mediabrowser-server /opt/mediabrowser-server/MediaBrowser.Server.Mono.exe -programdata ${PROGRAMDATA}"
+#EXEC="/opt/mediabrowser-server/start.sh"
+EXEC="./MediaBrowser.Server.Mono.exe -programdata ${PROGRAMDATA} -ffmpeg /usr/bin/ffmpeg -ffprobe /usr/bin/ffprobe"
+EXEC_DIR="/opt/mediabrowser-server/"
+EXEC_USER="mediabrowser"
+LOG_FILE="/var/log/mediabrowser_start.log"
+
+start() {
+        ebegin "Starting MediaBrowser-Server"
+        # we are starting the service (-x):
+        # - in background with the given pid file (-m -p -b)
+        # - as a specific user (-u)
+        #start-stop-daemon -S -m -p $PIDFILE -b -u ${EXEC_USER} -d ${EXEC_DIR} -x ${EXEC} -1 ${LOG_FILE} -2 ${LOG_FILE}
+	start-stop-daemon -S -m -p $PIDFILE -b -u ${EXEC_USER} -d ${EXEC_DIR} -1 ${LOG_FILE} -2 ${LOG_FILE} -x mono -- ${EXEC}
+        eend $?
+}
+
+stop() {
+        ebegin "Stopping MediaBrowser-Server"
+        start-stop-daemon -K -p ${PIDFILE}
+        eend $?
+}
+
+restart() {
+        stop
+        sleep 3
+        start
+}
