@@ -9,7 +9,7 @@ inherit eutils user git-r3
 DESCRIPTION="Emby Server (formerly known as MediaBrowser Server) is a software that indexes a lot of different kinds of media and allows for them to be retrieved and played through the DLNA protocol on any device capable of processing them."
 HOMEPAGE="http://emby.media/"
 KEYWORDS="-* ~arm ~amd64 ~x86"
-SRC_URI="https://github.com/MediaBrowser/MediaBrowser/archive/${PV}.tar.gz"
+SRC_URI="https://github.com/MediaBrowser/Emby/archive/${PV}.tar.gz"
 SLOT="0"
 LICENSE="GPL-2"
 IUSE=""
@@ -17,7 +17,6 @@ RESTRICT="mirror test"
 
 RDEPEND=">=dev-lang/mono-3.2.7
 	>=media-video/ffmpeg-2[vpx]
-	>=media-libs/libmediainfo-0.7
 	media-gfx/imagemagick[jpeg,jpeg2k,webp,png]
 	!media-tv/mediabrowser-server
 	>=dev-db/sqlite-3.0.0"
@@ -40,7 +39,7 @@ pkg_setup() {
 # gentoo expects a specific subfolder in the working directory for the extracted source, so simply extracting won't work here
 src_unpack() {
         unpack ${A}
-        mv MediaBrowser-${PV} emby-server-${PV}
+        mv Emby-${PV} emby-server-${PV}
 }
 
 src_prepare() {
