@@ -177,6 +177,9 @@ src_compile() {
 	sed -i -e "s/^\(\s*app_instance_uuid\s*=\).*/#\1 (run uuidgen and insert the returned UUID here)/" production.ini
 	sed -i -e "s/^\(\s*beaker\.session\.secret\s*=\).*/#\1 (run uuidgen and insert the returned UUID here)/" production.ini
 	
+	# comment out sqlite DB as we don't want users to use it by accident
+	sed -i -e 's/^\(\s*\)\(sqlalchemy\.db1\.url\s*=\s*sqlite:.*\)/\1#\2/' production.ini
+	
 	# rename production.ini as it requires more configuration and is hard to read
 	mv production.ini production.ini.example
 	
@@ -231,41 +234,48 @@ src_install() {
 pkg_postinst() {
 	#               1         2         3         4         5         6         7         8
 	#      12345678901234567890123456789012345678901234567890123456789012345678901234567890
-	einfo "An example configuration file has already been created so you don't need to run"
-	einfo "make-config again; please copy and edit carefully on first setup:"
-	einfo "    cp -a ${installConfigPath}/production.ini.example ${installConfigPath}/production.ini"
-	einfo "    \$EDITOR ${installConfigPath}/production.ini"
-	einfo ""
-	einfo "After updates, please compare what has changed and copy any necessary changes:"
-	einfo "    diff -u ${installConfigPath}/production.ini ${installConfigPath}/production.ini.example"
-	einfo ""
-	einfo "You still need to follow Kallithea's other setup steps according to the"
-	einfo "instructions at:"
-	einfo "    ${urlDocumentationSetup}"
-	einfo ""
-	einfo "When doing so, please mind that Kallithea was installed into a Python virtual"
-	einfo "environment that has to be \"activated\" before it can be used. To do so,"
-	einfo "you will have to run a dedicated shell and initialize the environment by running"
-	einfo ""
-	einfo "    source ${installBasePath}/${virtualenvActivationPath}"
-	einfo ""
-	einfo "We altered the default config slightly. It may be best to have a look at our"
-	einfo "short example on how to setup hosting with Apache and mod_wsgi, even if you"
-	einfo "prefer another method of hosting Kallithea:"
-	einfo "    ${urlDocumentationMegacoffee}"
-	einfo ""
-	#einfo "We can wrap those commands for you if you run (no prior activation needed):"
-	#einfo "    emerge --config =${CATEGORY}/${PF}"
-	#einfo ""
-	einfo "Kallithea also provides a way to migrate your database if you are coming from"
-	einfo "RhodeCode 2.2 or below. Instructions can be found at:"
-	einfo "${urlDocumentationRhodeCode}"
-	einfo ""
+	elog  "An example configuration file has already been created so you don't need to run"
+	elog  "make-config again; please copy and edit carefully on first setup:"
+	elog  "    cp -a ${installConfigPath}/production.ini.example ${installConfigPath}/production.ini"
+	elog  "    \$EDITOR ${installConfigPath}/production.ini"
+	elog  ""
+	elog  "After updates, please compare what has changed and copy any necessary changes:"
+	elog  "    diff -u ${installConfigPath}/production.ini ${installConfigPath}/production.ini.example"
+	elog  ""
+	elog  "You still need to follow Kallithea's other setup steps according to the"
+	elog  "instructions at:"
+	elog  "    ${urlDocumentationSetup}"
+	elog  ""
+	elog  "When doing so, please mind that Kallithea was installed into a Python virtual"
+	elog  "environment that has to be \"activated\" before it can be used. To do so,"
+	elog  "you will have to run a dedicated shell and initialize the environment by running"
+	elog  ""
+	elog  "    source ${installBasePath}/${virtualenvActivationPath}"
+	elog  ""
+	elog  "We altered the default config slightly. It may be best to have a look at our"
+	elog  "short example on how to setup hosting with Apache and mod_wsgi, even if you"
+	elog  "prefer another method of hosting Kallithea:"
+	elog  "    ${urlDocumentationMegacoffee}"
+	elog  ""
+	#elog  "We can wrap those commands for you if you run (no prior activation needed):"
+	#elog  "    emerge --config =${CATEGORY}/${PF}"
+	#elog  ""
+	elog  "Kallithea also provides a way to migrate your database if you are coming from"
+	elog  "RhodeCode 2.2 or below. Instructions can be found at:"
+	elog  "${urlDocumentationRhodeCode}"
+	elog  ""
 	ewarn "Bear in mind that the whole purpose of a Python virtual environment is to"
 	ewarn "isolate complex dependency installations from other instances installed on the"
 	ewarn "same system so you will have to remember to re-emerge this ebuild when"
 	ewarn "Kallithea's dependencies received bug and in particular security fixes (assuming"
 	ewarn "it allows any more recent versions to be installed)."
+	
+	if use sqlite ; then
+		ewarn ""
+		ewarn "You chose to use SQLite for Kallithea. Please be advised that this is *ONLY* for"
+		ewarn "testing purposes, please avoid using SQLite in production and choose a different"
+		ewarn "database instead."
+	fi
 }
 
 
