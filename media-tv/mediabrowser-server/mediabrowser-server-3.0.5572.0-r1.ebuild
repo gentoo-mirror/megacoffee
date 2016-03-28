@@ -6,9 +6,9 @@ EAPI="5"
 
 inherit eutils user git-r3
 
-DESCRIPTION="MediaBrowser Server is a software that indexes a lot of different kinds of media and allows for them to be retrieved and played through the DLNA protocol on any device capable of processing them."
+DESCRIPTION="WARNING: DEPRECATED PACKAGE, USE media-tv/emby-server INSTEAD! MediaBrowser Server is a software that indexes a lot of different kinds of media and allows for them to be retrieved and played through the DLNA protocol on any device capable of processing them."
 HOMEPAGE="http://mediabrowser.tv/"
-KEYWORDS="-* ~arm ~amd64 ~x86"
+KEYWORDS=""
 SRC_URI="https://github.com/MediaBrowser/MediaBrowser/archive/${PV}.zip"
 SLOT="0"
 LICENSE="GPL-2"
