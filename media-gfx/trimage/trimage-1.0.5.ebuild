@@ -2,11 +2,11 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="5"
-PYTHON_COMPAT=( python{ 2_6, 2_7 } )
-
+PYTHON_COMPAT=( python2_7 )
 
 inherit git-2
-inherit distutils
+inherit distutils-r1
+inherit python-r1
 
 DESCRIPTION="GUI for PNG and JPEG optimization via optipng, pngcrush, advpng and jpegoptim"
 HOMEPAGE="http://trimage.org/"
@@ -33,7 +33,7 @@ IUSE=""
 #
 DEPEND="
 	>=dev-python/PyQt4-4.4
-	<dev-python/PyQt4-4.11
+	<dev-python/PyQt4-4.12
 	
 	>=media-gfx/optipng-0.6.2.1
 	<media-gfx/optipng-0.8
@@ -44,5 +44,11 @@ DEPEND="
 	~app-arch/advancecomp-1.15[png]
 	
 	>=media-gfx/jpegoptim-1.2.2
-	<media-gfx/jpegoptim-1.3
+	<media-gfx/jpegoptim-1.4
+"
+
+# PyQt4 needs to be emerged with X to build PyQt4.QtCore
+RDEPEND="
+	${DEPEND}
+	dev-python/PyQt4[X]
 "
