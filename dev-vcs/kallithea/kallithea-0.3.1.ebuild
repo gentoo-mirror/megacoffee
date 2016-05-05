@@ -18,7 +18,7 @@ inherit user
 
 DESCRIPTION="a web-based frontend and middleware to Mercurial and Git repositories"
 HOMEPAGE="https://kallithea-scm.org/"
-SRC_URI="https://pypi.python.org/packages/source/K/Kallithea/Kallithea-${PV}.tar.bz2"
+SRC_URI="https://pypi.python.org/packages/49/14/3b479b06e27aaa5b8552da33d8bfd2d4259941ce0d159d188528d4902853/Kallithea-0.3.1.tar.bz2"
 
 IUSE="+git mysql postgres sqlite"
 REQUIRED_USE="|| ( mysql postgres sqlite )"
