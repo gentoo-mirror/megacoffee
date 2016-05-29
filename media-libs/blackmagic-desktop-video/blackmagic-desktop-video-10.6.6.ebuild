@@ -2,16 +2,11 @@
 # Distributed under the terms of the GNU General Public License v2
 
 # TODOs:
-#  - figure out exact kernel version required to build the module without errors
-#  - test if it works nonetheless
-#  - warn/abort if wrong kernel version
-#    - inheriting linux-info breaks installation?!
 #  - fix QA notice about installing symlinks in /usr/lib
 
 EAPI=5
 
 inherit linux-mod
-#inherit linux-info
 
 DESCRIPTION="Desktop Video - drivers and tools for products by Blackmagic Design including DeckLink and Intensity"
 HOMEPAGE="http://www.blackmagicdesign.com/"
@@ -42,17 +37,16 @@ pkg_nofetch() {
 	einfo ""
 	einfo "  expected filename: ${SRC_URI}"
 	einfo ""
-	einfo "The license should be shown and has to be accepted before the download"
-	einfo "starts."
+	einfo "If your browser downloads a .tar.gz file you will need to gunzip it."
 }
 
-#pkg_pretend() {
-#	if kernel_is -ge 4 6 ; then
-#		#      12345678901234567890123456789012345678901234567890123456789012345678901234567890
-#		ewarn "Your kernel version seems to be unsupported; please consider downgrading to 3.16"
-#		ewarn "if modules don't work."
-#	fi
-#}
+pkg_pretend() {
+	if kernel_is -gt 3 18; then
+		#      12345678901234567890123456789012345678901234567890123456789012345678901234567890
+		ewarn "Your kernel version seems to be unsupported; please consider downgrading to 3.18"
+		ewarn "if modules don't work."
+	fi
+}
 
 src_unpack() {
 	unpack ${A}
@@ -75,10 +69,14 @@ src_compile() {
 
 src_install() {
 	# all pre-built binaries should go into /opt and be symlinked to usr/bin etc.
-	installdir="${D}/opt/blackmagic-desktop-video"
+	finalinstalldir="/opt/blackmagic-desktop-video"
+	installdir="${D}${finalinstalldir}"
 	
 	mkdir -p ${installdir}
 	cp -a ${WORKDIR}/${UNPACKED_DIR}/* ${installdir}/
+	
+	# copy text files (readme and license) from parent directory
+	cp -a ${WORKDIR}/Blackmagic_Desktop_Video_Linux_${PV}/*.txt ${installdir}/
 	
 	# there should a blank directory in /etc according to the archive...
 	mkdir -p ${installdir}/etc/blackmagic
@@ -90,9 +88,9 @@ src_install() {
 			'usr/bin/BlackmagicDesktopVideoUtility'
 			'usr/bin/BlackmagicFirmwareUpdater'
 			'usr/bin/BlackmagicFirmwareUpdaterGui'
+			'usr/lib/blackmagic'
 			'usr/lib/libDeckLinkAPI.so'
 			'usr/lib/libDeckLinkPreviewAPI.so'
-			'usr/lib/blackmagic'
 			'usr/sbin/DesktopVideoHelper'
 			'usr/share/applications/BlackmagicDesktopVideoUtility.desktop'
 			'usr/share/applications/BlackmagicFirmwareUpdaterGui.desktop'
@@ -114,6 +112,11 @@ src_install() {
 		dosym /opt/blackmagic-desktop-video/${path} ${path}
 	done
 	
+	# dneuge: no clue on how to use this...
+	## QA notice says we should generate a linker script if we don't place libraries in /usr/lib
+	## see: https://devmanual.gentoo.org/eclass-reference/toolchain-funcs.eclass/index.html
+	#gen_usr_ldscript usr/lib/libDeckLinkAPI.so usr/lib/libDeckLinkPreviewAPI.so
+
 	# don't symlink man-pages, install a copy instead
 	doman usr/share/man/man1/*.1
 	
@@ -135,11 +138,11 @@ pkg_postinst() {
 	
 	#      12345678901234567890123456789012345678901234567890123456789012345678901234567890
 	einfo ""
-	#einfo "Please do *NOT* report any QA errors to Gentoo or Blackmagic!"
-	#einfo ""
-	einfo "The kernel module to load is simply called blackmagic, but there's also"
-	einfo "blackmagic-io. When upgrading, please rmmod both first. Then modprobe blackmagic"
-	einfo "to see if it works (it should print your devices to kernel log)."
+	einfo "Please do *NOT* report any QA errors to Gentoo or Blackmagic!"
+	einfo ""
+	einfo "Kernel modules are blackmagic and blackmagic-io. Try blackmagic if in doubt."
+	einfo "When upgrading, please rmmod both first. Then modprobe blackmagic to see if it"
+	einfo "works (it should print your devices to kernel log)."
 	einfo ""
 	einfo "Installed tools are BlackmagicFirmwareUpdater, BlackmagicFirmwareUpdaterGui and"
 	einfo "BlackmagicDesktopVideoUtility (former BlackmagicControlPanel)."
@@ -162,6 +165,8 @@ pkg_postinst() {
 	einfo " 2) Your firmware may be outdated. Make sure you reload the modules (or simply"
 	einfo "    reboot) and then run BlackmagicFirmwareUpdater or, if you prefer,"
 	einfo "    BlackmagicFirmwareUpdaterGui"
+	einfo ""
+	einfo "License can be found in: ${finalinstalldir}/License.txt"
 	einfo ""
 	einfo "We are reloading udev rules now..."
 	/bin/udevadm control --reload-rules || einfo " ... failed, you may want to check this before rebooting!"
