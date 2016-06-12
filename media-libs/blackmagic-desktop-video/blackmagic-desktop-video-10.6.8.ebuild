@@ -148,6 +148,8 @@ pkg_postinst() {
 	einfo "Installed tools are BlackmagicFirmwareUpdater, BlackmagicFirmwareUpdaterGui and"
 	einfo "BlackmagicDesktopVideoUtility (former BlackmagicControlPanel)."
 	einfo ""
+	einfo "For Media Express emerge media-video/blackmagic-media-express."
+	einfo ""
 	if use autostart; then
 		einfo "Automated update check has been installed."
 	else
