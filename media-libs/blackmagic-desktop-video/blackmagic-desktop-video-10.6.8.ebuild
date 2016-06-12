@@ -22,8 +22,19 @@ KEYWORDS="~amd64"
 IUSE="autostart"
 RESTRICT="fetch"
 
+# dependencies found via command: (ldd would include transitive dependencies)
+# equery belongs $(for file in /usr/lib/libDeckLink* /usr/lib/blackmagic/*; do objdump -p $file | grep NEEDED; done 2>/dev/null | cut -b24- | sort | uniq | grep -vE 'lib(Qt5(Core|Network|Gui|Widgets)|qxcb|qgtk2|DeckLink)')
 DEPEND=""
-RDEPEND="${DEPEND}"
+RDEPEND="${DEPEND}
+	 dev-libs/glib:2
+	 dev-libs/libxml2
+	 media-libs/libpng:1.2
+	 sys-devel/gcc
+	 sys-libs/glibc
+	 sys-libs/zlib
+	 x11-libs/libX11
+	 x11-libs/libXext
+	"
 
 # supress QA warnings about stripping etc., i.e. stuff we cannot change since we install prebuilt binaries
 QA_PREBUILT="opt/blackmagic-desktop-video/usr/bin/* opt/blackmagic-desktop-video/usr/lib/*"
