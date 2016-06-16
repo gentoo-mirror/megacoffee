@@ -19,15 +19,13 @@ RDEPEND=">=dev-lang/mono-3.2.7
 	<dev-lang/mono-4.3
 	>=media-video/ffmpeg-2[vpx]
 	media-gfx/imagemagick[jpeg,jpeg2k,webp,png]
-	!media-tv/mediabrowser-server
-	!media-tv/emby-server
 	>=dev-db/sqlite-3.0.0"
 DEPEND="app-arch/unzip ${RDEPEND}"
 
-INSTALL_DIR="/opt/emby-server"
-DATA_DIR="/var/lib/emby-server"
-STARTUP_LOG="/var/log/emby-server_start.log"
-INIT_SCRIPT="${ROOT}/etc/init.d/emby-server"
+INSTALL_DIR="/opt/emby-server-beta"
+DATA_DIR="/var/lib/emby-server-beta"
+STARTUP_LOG="/var/log/emby-server-beta_start.log"
+INIT_SCRIPT="${ROOT}/etc/init.d/emby-server-beta"
 
 # INSTALL
 # #######################################################################################################
@@ -41,7 +39,7 @@ pkg_setup() {
 # gentoo expects a specific subfolder in the working directory for the extracted source, so simply extracting won't work here
 src_unpack() {
         unpack ${A}
-        mv Emby-${PV} emby-server-${PV}
+        mv Emby-${PV} emby-server-beta-${PV}
 }
 
 src_prepare() {
@@ -61,8 +59,8 @@ src_compile() {
 
 src_install() {
 	einfo "preparing startup scripts"
-	newinitd "${FILESDIR}"/emby-server.init_2  ${PN}
-	newconfd "${FILESDIR}"/emby-server.conf ${PN}
+	newinitd "${FILESDIR}"/emby-server-beta.init_2  ${PN}
+	newconfd "${FILESDIR}"/emby-server-beta.conf ${PN}
 
 	einfo "preparing startup log file"
 	dodir /var/log/
