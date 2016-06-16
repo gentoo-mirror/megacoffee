@@ -10,10 +10,11 @@ inherit linux-mod
 
 DESCRIPTION="Desktop Video - drivers and tools for products by Blackmagic Design including DeckLink and Intensity"
 HOMEPAGE="http://www.blackmagicdesign.com/"
-HOMEPAGE_DOWNLOAD_NAME="Desktop Video ${PV} Update"
+HOMEPAGE_DOWNLOAD_NAME="Desktop Video ${PV}"
 
 SRC_URI="Blackmagic_Desktop_Video_Linux_${PV}.tar"
-UNPACKED_DIR="desktopvideo-10.6.6a10-x86_64"
+DESKTOP_VIDEO_VERSION="10.6.8a2"
+UNPACKED_DIR="desktopvideo-${DESKTOP_VIDEO_VERSION}-x86_64"
 
 LICENSE="BlackmagicDesktopVideo"
 SLOT="0"
@@ -25,21 +26,21 @@ RESTRICT="fetch"
 # equery belongs $(for file in /usr/lib/libDeckLink* /usr/lib/blackmagic/*; do objdump -p $file | grep NEEDED; done 2>/dev/null | cut -b24- | sort | uniq | grep -vE 'lib(Qt5(Core|Network|Gui|Widgets)|qxcb|qgtk2|DeckLink)')
 DEPEND=""
 RDEPEND="${DEPEND}
-        dev-libs/glib:2
-        dev-libs/libxml2
-        media-libs/libpng:1.2
-        sys-devel/gcc
-        sys-libs/glibc
-        sys-libs/zlib
-        x11-libs/libX11
-        x11-libs/libXext
-       "
+	 dev-libs/glib:2
+	 dev-libs/libxml2
+	 media-libs/libpng:1.2
+	 sys-devel/gcc
+	 sys-libs/glibc
+	 sys-libs/zlib
+	 x11-libs/libX11
+	 x11-libs/libXext
+	"
 
 # supress QA warnings about stripping etc., i.e. stuff we cannot change since we install prebuilt binaries
 QA_PREBUILT="opt/blackmagic-desktop-video/usr/bin/* opt/blackmagic-desktop-video/usr/lib/*"
 
 # for kernel module compilation
-MODULE_NAMES="blackmagic(misc:${S}/usr/src/blackmagic-10.6.6a10:${S}/usr/src/blackmagic-10.6.6a10) blackmagic-io(misc:${S}/usr/src/blackmagic-io-10.6.6a10:${S}/usr/src/blackmagic-io-10.6.6a10)"
+MODULE_NAMES="blackmagic(misc:${S}/usr/src/blackmagic-${DESKTOP_VIDEO_VERSION}:${S}/usr/src/blackmagic-${DESKTOP_VIDEO_VERSION}) blackmagic-io(misc:${S}/usr/src/blackmagic-io-${DESKTOP_VIDEO_VERSION}:${S}/usr/src/blackmagic-io-${DESKTOP_VIDEO_VERSION})"
 BUILD_TARGETS="clean all"
 
 pkg_nofetch() {
@@ -63,7 +64,7 @@ src_unpack() {
 	unpack ${A}
 	
 	cd ${WORKDIR}
-	tar xfz Blackmagic_Desktop_Video_Linux_${PV}/other/x86_64/desktopvideo-10.6.6a10-x86_64.tar.gz
+	tar xfz Blackmagic_Desktop_Video_Linux_${PV}/other/x86_64/desktopvideo-${DESKTOP_VIDEO_VERSION}-x86_64.tar.gz
 	
 	# symlink to what is supposed to have been prepared
 	ln -s ${UNPACKED_DIR} ${P}
