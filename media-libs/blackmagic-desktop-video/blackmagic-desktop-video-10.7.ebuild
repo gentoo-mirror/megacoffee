@@ -52,13 +52,13 @@ pkg_nofetch() {
 	einfo "If your browser downloads a .tar.gz file you will need to gunzip it."
 }
 
-pkg_pretend() {
-	if kernel_is -gt 3 18; then
-		#      12345678901234567890123456789012345678901234567890123456789012345678901234567890
-		ewarn "Your kernel version seems to be unsupported; please consider downgrading to 3.18"
-		ewarn "if modules don't work."
-	fi
-}
+#pkg_pretend() {
+#	if kernel_is -gt 3 18; then
+#		#      12345678901234567890123456789012345678901234567890123456789012345678901234567890
+#		ewarn "Your kernel version seems to be unsupported; please consider downgrading to 3.18"
+#		ewarn "if modules don't work."
+#	fi
+#}
 
 src_unpack() {
 	unpack ${A}
