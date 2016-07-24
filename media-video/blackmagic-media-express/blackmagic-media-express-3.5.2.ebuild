@@ -6,7 +6,7 @@
 
 EAPI=5
 
-DESKTOP_VIDEO_SHORT_VERSION="10.6.8"
+DESKTOP_VIDEO_SHORT_VERSION="10.7"
 MEDIA_EXPRESS_VERSION="3.5.2a2"
 
 DESCRIPTION="Media Express - Blackmagic Design's tool for media capture, organization and playback"
