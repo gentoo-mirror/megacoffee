@@ -12,8 +12,8 @@ DESCRIPTION="Desktop Video - drivers and tools for products by Blackmagic Design
 HOMEPAGE="http://www.blackmagicdesign.com/"
 HOMEPAGE_DOWNLOAD_NAME="Desktop Video ${PV}"
 
-SRC_URI="Blackmagic_Desktop_Video_Linux_${PV}.tar"
-DESKTOP_VIDEO_VERSION="10.7a18"
+SRC_URI="Blackmagic_Desktop_Video_Linux_${PV}.tar.gz"
+DESKTOP_VIDEO_VERSION="10.8a2"
 UNPACKED_DIR="desktopvideo-${DESKTOP_VIDEO_VERSION}-x86_64"
 
 LICENSE="BlackmagicDesktopVideo"
@@ -44,21 +44,23 @@ MODULE_NAMES="blackmagic(misc:${S}/usr/src/blackmagic-${DESKTOP_VIDEO_VERSION}:$
 BUILD_TARGETS="clean all"
 
 pkg_nofetch() {
+	#               1         2         3         4         5         6         7         8
+	#      1234567890123456789012345678901234567890123456789012345678901234567890123456789012
 	einfo "Please visit ${HOMEPAGE} and download \"${HOMEPAGE_DOWNLOAD_NAME}\""
 	einfo "for your product from the support section and move it to ${DISTDIR}"
 	einfo ""
 	einfo "  expected filename: ${SRC_URI}"
 	einfo ""
-	einfo "If your browser downloads a .tar.gz file you will need to gunzip it."
+	einfo "If your browser downloads a .tar file you will need to rename it to .tar.gz"
 }
 
-pkg_pretend() {
-	if kernel_is -gt 4 5; then
-		#      12345678901234567890123456789012345678901234567890123456789012345678901234567890
-		ewarn "Your kernel version seems to be unsupported; please consider downgrading to 4.4"
-		ewarn "if modules don't work or upgrade to a Desktop Video 10.8 or later."
-	fi
-}
+#pkg_pretend() {
+#	if kernel_is -gt 3 18; then
+#		#      12345678901234567890123456789012345678901234567890123456789012345678901234567890
+#		ewarn "Your kernel version seems to be unsupported; please consider downgrading to 3.18"
+#		ewarn "if modules don't work."
+#	fi
+#}
 
 src_unpack() {
 	unpack ${A}
@@ -97,26 +99,26 @@ src_install() {
 	# NOTE: Not linking usr/lib/systemd as I don't use that and thus can't test it...
 	symlinks=(
 			'etc/init.d/DesktopVideoHelper'
-			'usr/bin/BlackmagicDesktopVideoUtility'
+			'usr/bin/BlackmagicDesktopVideoSetup'
 			'usr/bin/BlackmagicFirmwareUpdater'
 			'usr/bin/BlackmagicFirmwareUpdaterGui'
 			'usr/lib/blackmagic'
 			'usr/lib/libDeckLinkAPI.so'
 			'usr/lib/libDeckLinkPreviewAPI.so'
 			'usr/sbin/DesktopVideoHelper'
-			'usr/share/applications/BlackmagicDesktopVideoUtility.desktop'
+			'usr/share/applications/BlackmagicDesktopVideoSetup.desktop'
 			'usr/share/applications/BlackmagicFirmwareUpdaterGui.desktop'
 			'usr/share/doc/desktopvideo'
 			'usr/share/doc/desktopvideo-gui'
-			'usr/share/icons/hicolor/16x16/apps/BlackmagicDesktopVideoUtility.png'
+			'usr/share/icons/hicolor/16x16/apps/BlackmagicDesktopVideoSetup.png'
 			'usr/share/icons/hicolor/16x16/apps/BlackmagicFirmwareUpdaterGui.png'
-			'usr/share/icons/hicolor/32x32/apps/BlackmagicDesktopVideoUtility.png'
+			'usr/share/icons/hicolor/32x32/apps/BlackmagicDesktopVideoSetup.png'
 			'usr/share/icons/hicolor/32x32/apps/BlackmagicFirmwareUpdaterGui.png'
-			'usr/share/icons/hicolor/48x48/apps/BlackmagicDesktopVideoUtility.png'
+			'usr/share/icons/hicolor/48x48/apps/BlackmagicDesktopVideoSetup.png'
 			'usr/share/icons/hicolor/48x48/apps/BlackmagicFirmwareUpdaterGui.png'
-			'usr/share/icons/hicolor/128x128/apps/BlackmagicDesktopVideoUtility.png'
+			'usr/share/icons/hicolor/128x128/apps/BlackmagicDesktopVideoSetup.png'
 			'usr/share/icons/hicolor/128x128/apps/BlackmagicFirmwareUpdaterGui.png'
-			'usr/share/icons/hicolor/256x256/apps/BlackmagicDesktopVideoUtility.png'
+			'usr/share/icons/hicolor/256x256/apps/BlackmagicDesktopVideoSetup.png'
 			'usr/share/icons/hicolor/256x256/apps/BlackmagicFirmwareUpdaterGui.png'
                  )
 	
@@ -157,7 +159,8 @@ pkg_postinst() {
 	einfo "works (it should print your devices to kernel log)."
 	einfo ""
 	einfo "Installed tools are BlackmagicFirmwareUpdater, BlackmagicFirmwareUpdaterGui and"
-	einfo "BlackmagicDesktopVideoUtility (former BlackmagicControlPanel)."
+	einfo "BlackmagicDesktopVideoSetup (former BlackmagicDesktopVideoUtility and called"
+	einfo "BlackmagicControlPanel before that)."
 	einfo ""
 	einfo "For Media Express emerge media-video/blackmagic-media-express."
 	einfo ""
@@ -180,7 +183,7 @@ pkg_postinst() {
 	einfo "    reboot) and then run BlackmagicFirmwareUpdater or, if you prefer,"
 	einfo "    BlackmagicFirmwareUpdaterGui"
 	einfo ""
-	einfo "License can be found in: ${finalinstalldir}/License.txt"
+	einfo "Licenses can be found in: ${finalinstalldir}/usr/share/doc/"
 	einfo ""
 	einfo "We are reloading udev rules now..."
 	/bin/udevadm control --reload-rules || einfo " ... failed, you may want to check this before rebooting!"
