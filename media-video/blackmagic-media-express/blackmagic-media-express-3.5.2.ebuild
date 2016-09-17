@@ -6,14 +6,14 @@
 
 EAPI=5
 
-DESKTOP_VIDEO_SHORT_VERSION="10.7"
+DESKTOP_VIDEO_SHORT_VERSION="10.8"
 MEDIA_EXPRESS_VERSION="3.5.2a2"
 
 DESCRIPTION="Media Express - Blackmagic Design's tool for media capture, organization and playback"
 HOMEPAGE="http://www.blackmagicdesign.com/"
 HOMEPAGE_DOWNLOAD_NAME="Desktop Video ${DESKTOP_VIDEO_SHORT_VERSION}"
 
-SRC_URI="Blackmagic_Desktop_Video_Linux_${DESKTOP_VIDEO_SHORT_VERSION}.tar"
+SRC_URI="Blackmagic_Desktop_Video_Linux_${DESKTOP_VIDEO_SHORT_VERSION}.tar.gz"
 UNPACKED_DIR="mediaexpress-${MEDIA_EXPRESS_VERSION}-x86_64"
 
 LICENSE="BlackmagicDesktopVideo"
@@ -52,7 +52,7 @@ pkg_nofetch() {
 	einfo ""
 	einfo "  expected filename: ${SRC_URI}"
 	einfo ""
-	einfo "If your browser downloads a .tar.gz file you will need to gunzip it."
+	einfo "If your browser downloads a .tar file you will need to rename it to .tar.gz"
 }
 
 src_unpack() {
