@@ -58,7 +58,7 @@ src_compile() {
 
 src_install() {
 	einfo "preparing startup scripts"
-	newinitd "${FILESDIR}"/emby-server-beta.init_2  ${PN}
+	newinitd "${FILESDIR}"/emby-server-beta.init_3  ${PN}
 	newconfd "${FILESDIR}"/emby-server-beta.conf ${PN}
 
 	einfo "preparing startup log file"
