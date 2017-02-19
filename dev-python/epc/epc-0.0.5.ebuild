@@ -1,10 +1,10 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="5"
-PYTHON_COMPAT=( python{ 2_6, 2_7, 3_2 } )
+EAPI="6"
+PYTHON_COMPAT=( python{2_7,3_4} )
 
-inherit distutils
+inherit distutils-r1
 
 DESCRIPTION="RPC stack for Emacs Lisp - bidirectional integration between Python and Emacs"
 HOMEPAGE="http://python-epc.readthedocs.org/en/latest/ https://pypi.python.org/pypi/epc"
