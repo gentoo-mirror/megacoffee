@@ -6,7 +6,8 @@
 
 EAPI=5
 
-DESKTOP_VIDEO_SHORT_VERSION="10.8.4"
+DESKTOP_VIDEO_SHORT_VERSION="10.9"
+DESKTOP_VIDEO_VERSION="10.9a7"
 MEDIA_EXPRESS_VERSION="3.5.3a1"
 
 DESCRIPTION="Media Express - Blackmagic Design's tool for media capture, organization and playback"
@@ -59,7 +60,7 @@ src_unpack() {
 	unpack ${A}
 	
 	cd ${WORKDIR}
-	tar xfz Blackmagic_Desktop_Video_Linux_${DESKTOP_VIDEO_SHORT_VERSION}/other/x86_64/mediaexpress-${MEDIA_EXPRESS_VERSION}-x86_64.tar.gz
+	tar xfz Blackmagic_Desktop_Video_Linux_${DESKTOP_VIDEO_VERSION}/other/x86_64/mediaexpress-${MEDIA_EXPRESS_VERSION}-x86_64.tar.gz
 	
 	# symlink to what is supposed to have been prepared
 	ln -s ${UNPACKED_DIR} ${P}
