@@ -4,7 +4,7 @@
 
 EAPI="5"
 
-inherit eutils user git-r3
+inherit eutils user git-r3 dotnet
 
 DESCRIPTION="Emby Server (formerly known as MediaBrowser Server) is a software that indexes a lot of different kinds of media and allows for them to be retrieved and played through the DLNA protocol on any device capable of processing them."
 HOMEPAGE="http://emby.media/"
@@ -20,7 +20,8 @@ RDEPEND=">=dev-lang/mono-4.6.0
 	media-gfx/imagemagick[jpeg,jpeg2k,webp,png]
 	!media-tv/mediabrowser-server
 	>=dev-db/sqlite-3.0.0
-	dev-dotnet/referenceassemblies-pcl"
+	dev-dotnet/referenceassemblies-pcl
+	app-misc/ca-certificates"
 DEPEND="app-arch/unzip ${RDEPEND}"
 
 INSTALL_DIR="/opt/emby-server"
@@ -35,6 +36,11 @@ pkg_setup() {
 	einfo "creating user for Emby"
 	enewgroup emby
 	enewuser emby -1 /bin/bash ${INSTALL_DIR} "emby"
+
+	einfo "updating root certificates for mono certificate store"
+        addwrite "/usr/share/.mono/keypairs"
+	dotnet_pkg_setup
+        cert-sync /etc/ssl/certs/ca-certificates.crt
 }
 
 # gentoo expects a specific subfolder in the working directory for the extracted source, so simply extracting won't work here
@@ -44,6 +50,7 @@ src_unpack() {
 }
 
 src_prepare() {
+	# the user can define the quality of the imagemagic himself, here we try to figure out the correct files to use in our configuration
 	MAGICKWAND=$(ldconfig -p | grep MagickWand.*.so$ | cut -d" " -f4)
 	MAGICKWAND=${MAGICKWAND##*/}
 	einfo "adapting to imagemagick library to: ${MAGICKWAND}"
@@ -52,11 +59,7 @@ src_prepare() {
 
 
 src_compile() {
-	einfo "updating root certificates for mono certificate store"
-	addwrite "/usr/share/.mono/keypairs"
-	cert-sync /etc/ssl/certs/ca-certificates.crt
-	einfo "now actually compile"
-	xbuild /p:Configuration="Release Mono" /p:Platform="Any CPU" MediaBrowser.Mono.sln || die "building failed"
+	xbuild /p:Configuration="Release Mono" /p:Platform="Any CPU" MediaBrowser.sln || die "building failed"
 }
 
 src_install() {
@@ -72,7 +75,7 @@ src_install() {
 	einfo "installing compiled files"
 	diropts -oemby -gemby
 	dodir ${INSTALL_DIR}
-	cp -R ${S}/MediaBrowser.Server.Mono/bin/Release\ Mono/* ${D}${INSTALL_DIR}/ || die "install failed, possibly compile did not succeed earlier?"
+	cp -R ${S}/MediaBrowser.Server.Mono/bin/Release/* ${D}${INSTALL_DIR}/ || die "install failed, possibly compile did not succeed earlier?"
 	chown emby:emby -R ${D}${INSTALL_DIR}
 
 	einfo "prepare data directory"
