@@ -44,6 +44,7 @@ src_unpack() {
 }
 
 src_prepare() {
+	# the user can define the quality of the imagemagic himself, here we try to figure out the correct files to use in our configuration
 	MAGICKWAND=$(ldconfig -p | grep MagickWand.*.so$ | cut -d" " -f4)
 	MAGICKWAND=${MAGICKWAND##*/}
 	einfo "adapting to imagemagick library to: ${MAGICKWAND}"
@@ -54,8 +55,8 @@ src_prepare() {
 src_compile() {
 	einfo "updating root certificates for mono certificate store"
 	cert-sync /etc/ssl/certs/ca-certificates.crt
-	einfo "now actually compile"
-	xbuild /p:Configuration="Release Mono" /p:Platform="Any CPU" MediaBrowser.Mono.sln || die "building failed"
+	einfo "compiling"
+	xbuild /p:Configuration="Release Mono" /p:Platform="Any CPU" MediaBrowser.sln || die "building failed"
 }
 
 src_install() {
@@ -71,7 +72,7 @@ src_install() {
 	einfo "installing compiled files"
 	diropts -oemby -gemby
 	dodir ${INSTALL_DIR}
-	cp -R ${S}/MediaBrowser.Server.Mono/bin/Release\ Mono/* ${D}${INSTALL_DIR}/ || die "install failed, possibly compile did not succeed earlier?"
+	cp -R ${S}/MediaBrowser.Server.Mono/bin/Release/* ${D}${INSTALL_DIR}/ || die "install failed, possibly compile did not succeed earlier?"
 	chown emby:emby -R ${D}${INSTALL_DIR}
 
 	einfo "prepare data directory"
