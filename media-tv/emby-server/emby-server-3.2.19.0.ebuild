@@ -54,6 +54,7 @@ src_prepare() {
 
 src_compile() {
 	einfo "updating root certificates for mono certificate store"
+	addwrite "/usr/share/.mono/keypairs"
 	cert-sync /etc/ssl/certs/ca-certificates.crt
 	einfo "compiling"
 	xbuild /p:Configuration="Release Mono" /p:Platform="Any CPU" MediaBrowser.sln || die "building failed"
