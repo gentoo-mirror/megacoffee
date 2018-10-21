@@ -3,3 +3,12 @@
 # ebuild was restored from official portage tree after deletion and should
 # only be used as a last resort
 =media-libs/xine-lib-1.1.20
+
+# Daniel Neugebauer <dneuge@energiequant.de> (21 Oct 2018)
+# for gentoo-overlay.megacoffee.net
+# Kallithea versions before 0.3.5 are vulnerable to several security issues
+# (incorrect access control, directory traversal, XSS). See the 0.3.5 release
+# notes on details and recommended actions and upgrade ASAP (update was
+# already published on 6 Jun 2018):
+# https://kallithea-scm.org/news/release-0.3.5.html
+<dev-vcs/kallithea-0.3.5
