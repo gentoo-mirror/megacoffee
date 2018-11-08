@@ -59,6 +59,7 @@ src_prepare() {
 
 
 src_compile() {
+	addpredict "/etc/mono/registry"
 	xbuild /p:Configuration="Release Mono" /p:Platform="Any CPU" MediaBrowser.sln || die "building failed"
 }
 
