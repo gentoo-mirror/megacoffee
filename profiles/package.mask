@@ -12,3 +12,14 @@
 # already published on 6 Jun 2018):
 # https://kallithea-scm.org/news/release-0.3.5.html
 <dev-vcs/kallithea-0.3.5
+
+# Daniel Neugebauer <dneuge@energiequant.de> (29 Dec 2018)
+# for gentoo-overlay.megacoffee.net
+# Kallithea versions before 0.3.6 are vulnerable to privilege escalation
+# in Mercurial (CVE-2018-1000132).
+# Note that Kallithea 0.3.6 continues to use a vulnerable Mercurial version
+# (<4.5.1) but attempts to mitigate the issue.
+# Upgrade ASAP (updates were already published on 6 Mar 2018 for Mercurial
+# and 4 Nov 2018 for additional mitigation in Kallithea):
+# https://kallithea-scm.org/news/release-0.3.6.html
+<dev-vcs/kallithea-0.3.6
