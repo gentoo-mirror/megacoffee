@@ -1,0 +1,14 @@
+DEFINED_PHASES=compile install postinst prepare prerm setup unpack
+DEPEND=app-arch/unzip >=dev-lang/mono-3.2.7 <dev-lang/mono-4.3 >=media-video/ffmpeg-2[vpx] media-gfx/imagemagick[jpeg,jpeg2k,webp,png] >=dev-db/sqlite-3.0.0 >=dev-vcs/git-1.8.2.1[curl]
+DESCRIPTION=Emby Server (formerly known as MediaBrowser Server) is a software that indexes a lot of different kinds of media and allows for them to be retrieved and played through the DLNA protocol on any device capable of processing them.
+EAPI=5
+HOMEPAGE=http://emby.media/
+KEYWORDS=-* ~arm ~amd64 ~x86
+LICENSE=GPL-2
+PROPERTIES=live
+RDEPEND=>=dev-lang/mono-3.2.7 <dev-lang/mono-4.3 >=media-video/ffmpeg-2[vpx] media-gfx/imagemagick[jpeg,jpeg2k,webp,png] >=dev-db/sqlite-3.0.0
+RESTRICT=mirror test
+SLOT=0
+SRC_URI=https://github.com/MediaBrowser/Emby/archive/3.1.59.tar.gz
+_eclasses_=desktop	b1d22ac8bdd4679ab79c71aca235009d	epatch	a1bf4756dba418a7238f3be0cb010c54	estack	43ddf5aaffa7a8d0482df54d25a66a1f	eutils	6e6c2737b59a4b982de6fb3ecefd87f8	git-r3	562b380fc59ae6a8622171d0acb777d1	ltprune	2729691420b6deeda2a90b1f1183fb55	multilib	1d91b03d42ab6308b5f4f6b598ed110e	preserve-libs	ef207dc62baddfddfd39a164d9797648	toolchain-funcs	2f8b8f320bee13b71a8a54cc6d09e08a	user	00484e1be1aac73e24fca1c99557a7d6	vcs-clean	2a0f74a496fa2b1552c4f3398258b7bf
+_md5_=218fa28cebf3d4ea0f1f256841761908

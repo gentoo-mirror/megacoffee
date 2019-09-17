@@ -1,0 +1,11 @@
+DEFINED_PHASES=preinst
+DEPEND=>=sys-libs/glibc-2.13.0 >=dev-libs/glib-2.30.0 >=x11-libs/cairo-1.12.0 >=dev-cpp/cairomm-1.10.0 >=x11-libs/gdk-pixbuf-2.26.0 >=x11-libs/pango-1.30.0 >=dev-cpp/pangomm-2.28.0 >=dev-cpp/gtkmm-3.4.0 >=net-libs/webkit-gtk-1.8.0 >=dev-libs/libzip-0.10.0 >=x11-libs/libnotify-0.7.5 >=sys-libs/zlib-1.2.0 >=media-sound/pulseaudio-1 >=dev-libs/openssl-1.0.0 x11-themes/gtk-engines-unico x11-themes/gtk-engines-murrine gnome-base/librsvg
+DESCRIPTION=Trillian is a multi-platform multi-protocol chat client. Attention: you'll need a pro account to use trillian for now!
+EAPI=2
+HOMEPAGE=http://www.trillian.im
+KEYWORDS=-* ~x86 ~amd64
+LICENSE=Closed Source
+RESTRICT=mirror
+SLOT=0
+SRC_URI=x86? ( http://www.trillian.im/get/linux/beta/apt/dists/stable/main/binary-i386/trillian_1.0.0.2_i386.deb ) amd64? ( http://www.trillian.im/get/linux/beta/apt/dists/stable/main/binary-amd64/trillian_1.0.0.2_amd64.deb )
+_md5_=3f75afdb71cba29d0805d211dd7305eb
