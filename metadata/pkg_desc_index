@@ -11,7 +11,6 @@ media-plugins/gimp-dds 3.0.1: DirectDraw Surface (DDS) format plugin for Gimp 2
 media-tv/emby-server 3.0.8500 3.1.5 3.2.70.0-r1 3.4.1.0 9999: Emby Server (formerly known as MediaBrowser Server) is a software that indexes a lot of different kinds of media and allows for them to be retrieved and played through the DLNA protocol on any device capable of processing them.
 media-tv/emby-server-beta 3.1.25 3.1.59 3.1.66 3.1.91 3.1.144 3.1.164 3.1.189 3.1.201: Emby Server (formerly known as MediaBrowser Server) is a software that indexes a lot of different kinds of media and allows for them to be retrieved and played through the DLNA protocol on any device capable of processing them.
 media-video/blackmagic-media-express 3.5.2 3.5.3: Media Express - Blackmagic Design's tool for media capture, organization and playback
-media-video/lightworks 11.5: feature-rich non-linear video editor (NLE)
 media-video/qt-faststart-python 1.6 1.8.0: Quicktime atom positioning in Python for fast streaming
 net-analyzer/nrpe 2.15: Nagios Remote Plugin Executor
 net-im/trillian 1.0.0.2: Trillian is a multi-platform multi-protocol chat client. Attention: you'll need a pro account to use trillian for now!
