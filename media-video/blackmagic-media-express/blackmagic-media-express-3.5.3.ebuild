@@ -33,7 +33,7 @@ RDEPEND="${DEPEND}
 
 	 dev-libs/glib:2
 	 media-libs/alsa-lib
-	 media-libs/libpng:1.2
+	 media-libs/libpng:0/16
 	 sys-devel/gcc
 	 sys-libs/glibc
 	 sys-libs/zlib
