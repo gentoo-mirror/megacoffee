@@ -6,8 +6,9 @@
 
 EAPI=5
 
-DESKTOP_VIDEO_SHORT_VERSION="10.8"
-MEDIA_EXPRESS_VERSION="3.5.2a2"
+DESKTOP_VIDEO_SHORT_VERSION="11.4"
+DESKTOP_VIDEO_VERSION="11.4a14"
+MEDIA_EXPRESS_VERSION="3.6a13"
 
 DESCRIPTION="Media Express - Blackmagic Design's tool for media capture, organization and playback"
 HOMEPAGE="http://www.blackmagicdesign.com/"
@@ -28,17 +29,21 @@ RESTRICT="fetch"
 
 DEPEND=""
 RDEPEND="${DEPEND}
-	 >=media-libs/blackmagic-desktop-video-10.6
+	 >=media-libs/blackmagic-desktop-video-11.4
 
 	 dev-libs/glib:2
 	 media-libs/alsa-lib
-	 media-libs/libpng:1.2
+	 media-libs/fontconfig
+	 media-libs/freetype
+	 media-libs/mesa
 	 sys-devel/gcc
 	 sys-libs/glibc
-	 sys-libs/zlib
 	 virtual/glu
+	 x11-libs/libICE
+	 x11-libs/libSM
 	 x11-libs/libX11
-	 x11-libs/libXext
+	 x11-libs/libXi
+	 x11-libs/libxcb
 	"
 
 # supress QA warnings about stripping etc., i.e. stuff we cannot change since we install prebuilt binaries
@@ -76,7 +81,7 @@ src_install() {
 	# NOTE: Not linking usr/lib/systemd as I don't use that and thus can't test it...
 	symlinks=(
 			'usr/bin/MediaExpress'
-			'usr/lib/blackmagic/me'
+			'usr/lib/blackmagic/MediaExpress'
 			'usr/share/applications/MediaExpress.desktop'
 			'usr/share/doc/mediaexpress'
 			'usr/share/icons/hicolor/32x32/apps/MediaExpress.png'
