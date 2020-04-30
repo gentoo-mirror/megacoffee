@@ -4,7 +4,7 @@
 EAPI="5"
 PYTHON_COMPAT=( python2_7 )
 
-inherit git-2
+inherit git-r3
 inherit distutils-r1
 inherit python-r1
 
