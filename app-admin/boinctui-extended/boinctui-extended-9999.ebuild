@@ -32,6 +32,6 @@ src_configure() {
 	eautoconf
 	econf
 	
-	# add missing -ltinfo to linker options
-	sed -i -e 's/^\(LIBS\s*=.*\)/\1 -ltinfo/' Makefile
+	# add missing -ltinfow to linker options
+	sed -i -e 's/^\(LIBS\s*=.*\)/\1 -ltinfow/' Makefile
 }
