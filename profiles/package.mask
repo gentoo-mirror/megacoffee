@@ -17,3 +17,23 @@
 # and 4 Nov 2018 for additional mitigation in Kallithea):
 # https://kallithea-scm.org/news/release-0.3.6.html
 <dev-vcs/kallithea-0.3.6
+
+# Daniel Neugebauer <dneuge@energiequant.de> (17 May 2020)
+# for gentoo-overlay.megacoffee.net
+#
+# Kallithea versions before 0.4.1 have several more or less severe
+# vulnerabilities, check their website for details:
+# https://kallithea-scm.org/security/
+#
+# Megacoffee overlay has stopped providing updated ebuilds for a number of
+# reasons, so we will remove all ebuilds from our repository around mid of
+# June.
+#
+# Most importantly we do not see any good (automatable) migration path
+# between 0.3 and later versions, so an update will require your manual
+# intervention anyway.
+#
+# Since the ebuild has just been a wrapper around virtualenv it should not
+# be too difficult to replace it following the manual if you want to
+# continue with the current type of installation.
+<dev-vcs/kallithea-0.4.1
