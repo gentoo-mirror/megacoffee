@@ -46,10 +46,13 @@ RDEPEND="${DEPEND}
 QA_PREBUILT="opt/blackmagic-media-express/usr/lib/*"
 
 pkg_nofetch() {
+	#               1         2         3         4         5         6         7
+	#      123456789012345678901234567890123456789012345678901234567890123456789012
 	einfo "Media Express is bundled with Desktop Video downloads."
 	einfo ""
 	einfo "Please visit ${HOMEPAGE} and download \"${HOMEPAGE_DOWNLOAD_NAME}\""
-	einfo "for your product from the support section and move it to ${DISTDIR}"
+	einfo "for your product from the support section and move it to your DISTDIR"
+	einfo "(/var/cache/distfiles or /usr/portage/distfiles unless you changed it)."
 	einfo ""
 	einfo "  expected filename: ${SRC_URI}"
 	einfo ""
