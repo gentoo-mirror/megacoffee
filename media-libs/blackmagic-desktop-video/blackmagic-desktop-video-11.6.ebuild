@@ -23,7 +23,7 @@ SLOT="0"
 KEYWORDS="~amd64"
 #IUSE="autostart patch_compat"
 IUSE="autostart"
-RESTRICT="fetch"
+RESTRICT="fetch splitdebug"
 
 # dependencies found via command: (ldd would include transitive dependencies)
 # equery belongs $(for file in /usr/lib/libDeckLink* /usr/lib/blackmagic/*; do objdump -p $file | grep NEEDED; done 2>/dev/null | cut -b24- | sort | uniq | grep -vE 'lib(Qt5(Core|Network|Gui|Widgets)|qxcb|qgtk2|DeckLink)')
