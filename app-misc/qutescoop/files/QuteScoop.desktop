@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=QuteScoop
+Comment=QuteScoop is a platform-independent status indicator for VATSIM.
+Icon=/usr/share/icons/hicolor/32x32/apps/qutescoop.png
+Exec=/usr/bin/QuteScoop
+Terminal=false
+Categories=Network
