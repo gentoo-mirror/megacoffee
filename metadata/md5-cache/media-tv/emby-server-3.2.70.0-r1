@@ -3,6 +3,7 @@ DEPEND=app-arch/unzip >=dev-lang/mono-4.6.0 >=media-video/ffmpeg-2[vpx] media-gf
 DESCRIPTION=Emby Server (formerly known as MediaBrowser Server) is a software that indexes a lot of different kinds of media and allows for them to be retrieved and played through the DLNA protocol on any device capable of processing them.
 EAPI=5
 HOMEPAGE=http://emby.media/
+INHERIT=eutils user git-r3 dotnet
 KEYWORDS=-* ~arm ~amd64 ~x86
 LICENSE=GPL-2
 PROPERTIES=live
@@ -10,5 +11,5 @@ RDEPEND=>=dev-lang/mono-4.6.0 >=media-video/ffmpeg-2[vpx] media-gfx/imagemagick[
 RESTRICT=mirror test
 SLOT=0
 SRC_URI=https://github.com/MediaBrowser/Emby/archive/3.2.70.0.tar.gz
-_eclasses_=desktop	c0d27bf73aa08ca05b663dbd31fbef28	dotnet	0d7eb217485ac38df61bde3631fca53c	eapi7-ver	f9ec87e93172b25ce65a85303dc06964	edos2unix	33e347e171066657f91f8b0c72ec8773	epatch	e8f1ec13660dc2f44b32775765d85e42	estack	055c42df72f76a4f45ec92b35e83cd56	eutils	2d5b3f4b315094768576b6799e4f926e	git-r3	3e7ec3d6619213460c85e2aa48398441	l10n	8cdd85e169b835d518bc2fd59f780d8e	ltprune	4f3f2db5ce3ccbeeacdf3f94954043aa	mono-env	1f24c032c78290b0d9a07d5b343051a7	multilib	d410501a125f99ffb560b0c523cd3d1e	preserve-libs	ef207dc62baddfddfd39a164d9797648	toolchain-funcs	24921b57d6561d87cbef4916a296ada4	user	b0a0d4ca9e3f79c38f8f4143b8d5a2d8	user-info	a2abd4e2f4c3b9b06d64bf1329359a02	vcs-clean	2a0f74a496fa2b1552c4f3398258b7bf	wrapper	4251d4c84c25f59094fd557e0063a974
+_eclasses_=desktop	c0d27bf73aa08ca05b663dbd31fbef28	edos2unix	33e347e171066657f91f8b0c72ec8773	estack	055c42df72f76a4f45ec92b35e83cd56	epatch	e8f1ec13660dc2f44b32775765d85e42	l10n	8cdd85e169b835d518bc2fd59f780d8e	toolchain-funcs	24921b57d6561d87cbef4916a296ada4	multilib	d410501a125f99ffb560b0c523cd3d1e	ltprune	4f3f2db5ce3ccbeeacdf3f94954043aa	preserve-libs	ef207dc62baddfddfd39a164d9797648	vcs-clean	2a0f74a496fa2b1552c4f3398258b7bf	wrapper	4251d4c84c25f59094fd557e0063a974	eutils	2d5b3f4b315094768576b6799e4f926e	user-info	a2abd4e2f4c3b9b06d64bf1329359a02	user	b0a0d4ca9e3f79c38f8f4143b8d5a2d8	git-r3	3e7ec3d6619213460c85e2aa48398441	eapi7-ver	f9ec87e93172b25ce65a85303dc06964	mono-env	1f24c032c78290b0d9a07d5b343051a7	dotnet	0d7eb217485ac38df61bde3631fca53c
 _md5_=a062febbbd1724cbfe5acae4ad73b040
