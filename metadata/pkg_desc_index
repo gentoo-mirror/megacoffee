@@ -3,6 +3,7 @@ app-admin/boinctui-extended 1.0.2 9999: a curses-based terminal BOINC client man
 app-backup/backup2l 1.4 1.5: 
 app-crypt/acmetool 0.0.58 0.2.1 9999: command line tool for automatically acquiring certificates from ACME servers
 app-misc/qutescoop 9999: A status monitor for VATSIM and other online flight simulation networks.
+app-office/softmaker-office 2021.1034: SoftMaker Office - an office suite featuring a word processor (TextMaker), spreadsheets (PlanMaker) and slides software (Presentations)
 media-gfx/trimage 1.0.6: GUI for PNG and JPEG optimization via optipng, pngcrush, advpng and jpegoptim
 media-libs/blackmagic-desktop-video 10.9 11.4 11.6: Desktop Video - drivers and tools for products by Blackmagic Design including DeckLink and Intensity
 media-libs/blackmagic-desktop-video-sdk 10.9 11.6: Desktop Video SDK - headers, examples and documentation necessary to develop/compile custom applications for products by Blackmagic Design (also known as DeckLink SDK)
