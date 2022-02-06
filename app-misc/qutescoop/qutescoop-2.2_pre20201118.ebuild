@@ -1,4 +1,4 @@
-# Copyright 1999-2021 Gentoo Foundation
+# Copyright 1999-2022 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
@@ -13,15 +13,13 @@ DESCRIPTION="A status monitor for VATSIM and other online flight simulation netw
 HOMEPAGE="https://qutescoop.github.io/qutescoop/"
 
 EGIT_REPO_URI="https://github.com/qutescoop/qutescoop.git"
+EGIT_COMMIT="85cbd8e5877ba4186f7498c78c4646d2b9513f0e"
 
 LICENSE="GPL-3"
 SLOT="0"
 
-# empty keywords for 9999 dev version = hardmask
-KEYWORDS=""
-
 # only 64 bits because at least paths ("unix64") would need to be changed
-#KEYWORDS="~amd64"
+KEYWORDS="~amd64"
 
 # bash is needed for our wrapper script
 DEPEND="
@@ -95,4 +93,10 @@ pkg_postinst() {
 	einfo ""
 	einfo "Please report any issues with the wrapper script to the ebuild author, not"
 	einfo "QuteScoop."
+	einfo ""
+	einfo "Note that this is an unsupported snapshot of an old development version which"
+	einfo "did not yet support VATSIM's JSON format. This version may work for other"
+	einfo "but is no longer capable of displaying VATSIM traffic without workarounds."
+	einfo ""
+	einfo "If you want to see VATSIM traffic, you should use version 2.3 or later."
 }
