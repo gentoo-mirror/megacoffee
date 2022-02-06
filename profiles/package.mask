@@ -1,0 +1,9 @@
+# megacoffee overlay / Daniel Neugebauer (2022-02-06)
+# VATSIM switched to a JSON-based data format in April 2021. Old QuteScoop
+# versions based on code before May 2021 are no longer able to natively
+# receive and display VATSIM data. Version 2.3 is the first release
+# supporting the new format.
+# Older versions are only useful if you want to display data from other
+# networks which still provide information in the legacy CSV-like "Whazzup"
+# format.
+<app-misc/qutescoop-2.2_pre20210511
