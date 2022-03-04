@@ -3,6 +3,7 @@
 <pkgmetadata>
 	<use>
 		<flag name="autostart">add firmware update check to autostart items of your desktop environment</flag>
+		<flag name="desktop">pull in dependencies needed for included desktop applications</flag>
 		<flag name="patch_compat">apply unsupported inofficial patches to extend kernel compatibility - may void warranty and even damage your hardware (not recommended)</flag>
 	</use>
 </pkgmetadata>
