@@ -5,7 +5,7 @@ app-crypt/acmetool 0.0.58 0.2.1 9999: command line tool for automatically acquir
 app-misc/qutescoop 2.2_pre20201118 9999: A status monitor for VATSIM and other online flight simulation networks.
 app-office/softmaker-office 2021.1034: SoftMaker Office - an office suite featuring a word processor (TextMaker), spreadsheets (PlanMaker) and slides software (Presentations)
 media-gfx/trimage 1.0.6: GUI for PNG and JPEG optimization via optipng, pngcrush, advpng and jpegoptim
-media-libs/blackmagic-desktop-video 11.6: Desktop Video - drivers and tools for products by Blackmagic Design including DeckLink and Intensity
-media-libs/blackmagic-desktop-video-sdk 11.6: Desktop Video SDK - headers, examples and documentation necessary to develop/compile custom applications for products by Blackmagic Design (also known as DeckLink SDK)
-media-video/blackmagic-media-express 3.6.1: Media Express - Blackmagic Design's tool for media capture, organization and playback
+media-libs/blackmagic-desktop-video 11.6 12.2.2: Desktop Video - drivers and tools for products by Blackmagic Design including DeckLink, UltraStudio and Intensity
+media-libs/blackmagic-desktop-video-sdk 11.6 12.2.2: Desktop Video SDK - headers, examples and documentation necessary to develop/compile custom applications for products by Blackmagic Design (also known as DeckLink SDK)
+media-video/blackmagic-media-express 3.6.1 3.7: Media Express - Blackmagic Design's tool for media capture, organization and playback
 net-misc/asterisk-softmodem 20160525: Asterisk application providing a V.21/V.22/V.23 compatible soft-modem for inbound connections

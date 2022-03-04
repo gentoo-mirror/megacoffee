@@ -1,0 +1,15 @@
+DEFINED_PHASES=compile install nofetch postinst postrm preinst setup unpack
+DEPEND=kernel_linux? ( sys-apps/kmod[tools] dist-kernel? ( virtual/dist-kernel:= ) ) sys-apps/sed kernel_linux? ( virtual/linux-sources virtual/libelf )
+DESCRIPTION=Desktop Video - drivers and tools for products by Blackmagic Design including DeckLink, UltraStudio and Intensity
+EAPI=8
+HOMEPAGE=http://www.blackmagicdesign.com/
+INHERIT=linux-info linux-mod
+IUSE=autostart +desktop dist-kernel
+KEYWORDS=~amd64
+LICENSE=BlackmagicDesktopVideo
+RDEPEND=desktop? ( media-libs/freetype media-libs/fontconfig media-libs/libglvnd sys-apps/dbus x11-libs/libICE x11-libs/libSM x11-libs/libX11 x11-libs/libXext x11-libs/libXrender x11-libs/libxcb ) dev-libs/glib dev-libs/libusb sys-apps/util-linux sys-devel/gcc sys-libs/glibc sys-libs/libcxx sys-libs/libcxxabi kernel_linux? ( sys-apps/kmod[tools] dist-kernel? ( virtual/dist-kernel:= ) )
+RESTRICT=fetch splitdebug strip
+SLOT=0
+SRC_URI=Blackmagic_Desktop_Video_Linux_12.2.2.tar.gz
+_eclasses_=toolchain-funcs	badd6e329e1f3e6bee99b35bf8763ce8	multilib	de4beb52bfa93c4c5d96792a6b5e1784	linux-info	2f039741fe92bcea55c78806d16ac0f5	linux-mod	5b3634191f60f8d1f7b860b8a0ea7f89
+_md5_=531e1d0eb57fb44a06cf16962ffde053
