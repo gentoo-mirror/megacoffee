@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile install postinst postrm prepare unpack
+DEPEND=app-arch/tar app-arch/xz-utils
+DESCRIPTION=SoftMaker Office - an office suite featuring a word processor (TextMaker), spreadsheets (PlanMaker) and slides software (Presentations)
+EAPI=8
+HOMEPAGE=https://www.softmaker.com/en/softmaker-office
+INHERIT=desktop xdg-utils
+KEYWORDS=~amd64
+LICENSE=SoftMakerOffice
+RDEPEND=app-arch/tar app-arch/xz-utils net-misc/curl sys-libs/glibc sys-devel/gcc virtual/opengl x11-libs/libX11 x11-libs/libXext x11-libs/libXmu x11-libs/libXrandr x11-libs/libXrender
+SLOT=0
+SRC_URI=https://www.softmaker.net/down/softmaker-office-2021-1060-amd64.tgz
+_eclasses_=desktop	7eb20ad915a0a318176d51bc2508ff5c	xdg-utils	ac0e315a3688929e34ac75b139e7349a
+_md5_=9846836137f5b66c44e01990aab5cf29
