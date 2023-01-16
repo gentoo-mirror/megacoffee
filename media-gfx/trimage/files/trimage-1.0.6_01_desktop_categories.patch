@@ -1,0 +1,13 @@
+"Application" is deprecated and causes a warning on installation
+
+diff -ur a/desktop/trimage.desktop b/desktop/trimage.desktop
+--- a/desktop/trimage.desktop	2023-01-16 19:33:10.736412274 +0100
++++ b/desktop/trimage.desktop	2023-01-16 19:34:01.108863233 +0100
+@@ -5,6 +5,6 @@
+ Icon=trimage
+ Type=Application
+ Exec=trimage
+-Categories=Application;Qt;Graphics;
++Categories=Qt;Graphics;
+ StartupNotify=true
+ 
