@@ -35,3 +35,5 @@ DEPEND="
 	>=media-gfx/jpegoptim-1.4
 	<media-gfx/jpegoptim-1.5
 "
+
+PATCHES="${FILESDIR}/${P}_*.patch"
