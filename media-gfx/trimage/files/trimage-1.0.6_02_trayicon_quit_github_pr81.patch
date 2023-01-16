@@ -1,0 +1,30 @@
+From 11114382e669664f538053255f753706fa8ccf96 Mon Sep 17 00:00:00 2001
+From: Artem Grinev <agrinev@manjaro.org>
+Date: Mon, 22 Feb 2021 00:09:33 +0400
+Subject: [PATCH] Tray icon fixes
+
+---
+ trimage/trimage.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/trimage/trimage.py b/trimage/trimage.py
+index 7efb522..ba18812 100644
+--- a/trimage/trimage.py
++++ b/trimage/trimage.py
+@@ -451,7 +451,7 @@ def __init__(self, parent):
+ 
+     def createActions(self):
+         self.quitAction = QAction(self.tr("&Quit"), self)
+-        self.quitAction.triggered.connect(self.parent.close)
++        self.quitAction.triggered.connect(QCoreApplication.quit)
+ 
+         self.addFiles = QAction(self.tr("&Add and compress"), self)
+         icon = QIcon()
+@@ -483,6 +483,7 @@ def createTrayIcon(self):
+ 
+         if QSystemTrayIcon.isSystemTrayAvailable():
+             self.trayIcon = QSystemTrayIcon(self)
++            self.trayIcon.activated.connect(lambda reason: self.hideMain.activate(QAction.Trigger))
+             self.trayIcon.setContextMenu(self.trayIconMenu)
+             self.trayIcon.setToolTip("Trimage image compressor")
+             self.trayIcon.setIcon(QIcon(self.parent.ui.get_image("pixmaps/trimage-icon.png")))
