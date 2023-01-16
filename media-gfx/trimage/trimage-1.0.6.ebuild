@@ -1,8 +1,8 @@
 # Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="7"
-PYTHON_COMPAT=( python3_{6,7,8} )
+EAPI="8"
+PYTHON_COMPAT=( python3_{8..11} )
 
 inherit git-r3
 inherit distutils-r1
@@ -21,7 +21,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 DEPEND="
-	dev-python/PyQt5
+	dev-python/PyQt5[${PYTHON_USEDEP}]
 	
 	>=media-gfx/optipng-0.7
 	<media-gfx/optipng-0.8
