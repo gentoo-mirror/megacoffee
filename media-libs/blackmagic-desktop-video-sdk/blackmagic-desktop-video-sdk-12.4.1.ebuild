@@ -13,7 +13,7 @@ UNPACKED_DIR="Blackmagic DeckLink SDK ${PV}"
 LICENSE="BlackmagicDesktopVideoSDK"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="doc examples"
+IUSE="doc examples precompiled"
 RESTRICT="fetch strip"
 
 pkg_nofetch() {
@@ -33,6 +33,14 @@ src_unpack() {
 	
 	# symlink to what is supposed to have been prepared
 	ln -s "${UNPACKED_DIR}" "${P}"
+}
+
+src_prepare() {
+	if ! use precompiled; then
+		rm -R Linux/Samples/bin
+		rm -R Examples/Linux/bin Examples/Win/bin Examples/Mac/Binaries.dmg
+	fi
+	eapply_user
 }
 
 src_install() {
