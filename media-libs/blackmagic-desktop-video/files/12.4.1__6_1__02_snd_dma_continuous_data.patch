@@ -1,0 +1,18 @@
+--- a/usr/src/blackmagic-io-12.4.1a15/bmio_audio.c	2022-11-14 03:18:19.000000000 +0100
++++ b/usr/src/blackmagic-io-12.4.1a15/bmio_audio.c	2023-03-16 21:45:06.422948309 +0100
+@@ -432,7 +432,15 @@
+ 
+ 	snd_pcm_lib_preallocate_pages_for_all(pcm,
+ 		SNDRV_DMA_TYPE_CONTINUOUS,
++		#if KERNEL_VERSION_OR_LATER(6, 1, 0)
++		// INOFFICIAL PATCH: snd_dma_continuous_data got removed in Linux kernel 6.1
++		// see: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.1.19&id=dd164fbfdc20ccf17be9186b1a5a4b2bc11b6a97
++		// - this is not requesting SNDRV_DMA_TYPE_VMALLOC so the value matters
++		// - commit says NULL will lead to an allocation in "the normal zone" which hopefully should be what was previously used
++		NULL,
++		#else
+ 		snd_dma_continuous_data(GFP_KERNEL),
++		#endif
+ 		bmio_audio_hardware.buffer_size,
+ 		bmio_audio_hardware.buffer_size);
+ 
