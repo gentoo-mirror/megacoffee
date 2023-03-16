@@ -5,3 +5,4 @@
 media-libs/blackmagic-desktop-video:autostart - add firmware update check to autostart items of your desktop environment
 media-libs/blackmagic-desktop-video:desktop - pull in dependencies needed for included desktop applications
 media-libs/blackmagic-desktop-video:patch_compat - apply unsupported inofficial patches to extend kernel compatibility - may void warranty and even damage your hardware (not recommended)
+media-libs/blackmagic-desktop-video-sdk:precompiled - Install the precompiled binaries included with upstream package.
