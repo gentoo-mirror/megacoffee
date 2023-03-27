@@ -15,7 +15,7 @@ GOLANG_PKG_NAME="acmetool"
 DESCRIPTION="command line tool for automatically acquiring certificates from ACME servers"
 HOMEPAGE="https://github.com/hlandau/acmetool"
 if [[ "${PV}" = 9999 ]]; then
-	inherit golang-live
+	inherit x-mgcf-golang-live
 	KEYWORDS=""
 else
 	GOLANG_PKG_DEPENDENCIES=(
@@ -47,7 +47,7 @@ else
 		"github.com/ogier/pflag:45c278ab3607870051a2ea9040bb85fcb8557481"
 		"github.com/hlandau/configurable:34642c4c8cbf56801d0e34f0e82187305983ac26 -> gopkg.in/hlandau/configurable.v1"
 	)
-	inherit golang-single
+	inherit x-mgcf-golang-single
 	KEYWORDS="~amd64 ~x86"
 fi
 
