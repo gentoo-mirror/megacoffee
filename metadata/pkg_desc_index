@@ -1,7 +1,7 @@
 app-admin/boinc-status 3.10: bash script to monitor BOINC status
 app-admin/boinctui-extended 1.0.2 9999: a curses-based terminal BOINC client manager
 app-backup/backup2l 1.4 1.5: 
-app-crypt/acmetool 0.0.58 0.2.1 9999: command line tool for automatically acquiring certificates from ACME servers
+app-crypt/acmetool 0.0.58 0.2.1 0.2.2 9999: command line tool for automatically acquiring certificates from ACME servers
 app-misc/qutescoop 2.2_pre20201118 9999: A status monitor for VATSIM and other online flight simulation networks.
 app-office/softmaker-office 2021.1034 2021.1060: SoftMaker Office - an office suite featuring a word processor (TextMaker), spreadsheets (PlanMaker) and slides software (Presentations)
 media-gfx/trimage 1.0.6: GUI for PNG and JPEG optimization via optipng, pngcrush, advpng and jpegoptim
