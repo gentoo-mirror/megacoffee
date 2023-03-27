@@ -2,9 +2,9 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-# @ECLASS: golang-single.eclass
+# @ECLASS: x-mgcf-golang-single.eclass
 # @MAINTAINER:
-# Mauro Toffanin <toffanin.mauro@gmail.com>
+# MegaCoffee Overlay <gentoo-overlay@megacoffee.net>
 # @AUTHOR:
 # Mauro Toffanin <toffanin.mauro@gmail.com>
 # @BLURB: An eclass for GoLang packages not installed inside GOPATH/GOBIN.
@@ -62,8 +62,34 @@
 #
 # @CODE
 
+inherit x-mgcf-golang-common
 
-inherit golang-common
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# !!!                                                             !!!
+# !!!                L E G A C Y    E C L A S S                   !!!
+# !!!                                                             !!!
+# !!!         DO NOT USE OUTSIDE OF MEGACOFFEE OVERLAY            !!!
+# !!!                                                             !!!
+# !!!                DO NOT USE FOR NEW EBUILDS                   !!!
+# !!!                                                             !!!
+# !!! This eclass has only been copied to megacoffee overlay from !!!
+# !!! go-overlay: https://github.com/Dr-Terrible/go-overlay       !!!
+# !!!                                                             !!!
+# !!! The only purpose is to keep currently depending ebuilds     !!!
+# !!! until they could be migrated to standard eclasses for Go,   !!!
+# !!! if suitable.                                                !!!
+# !!!                                                             !!!
+# !!! go-overlay was previously imported by megacoffee until it   !!!
+# !!! got removed from Gentoo overlay index in March 2023,        !!!
+# !!! rendering megacoffee overlay unreachable as a result.       !!!
+# !!!                                                             !!!
+# !!! Related bugs: https://bugs.gentoo.org/864653                !!!
+# !!!               https://bugs.gentoo.org/903167                !!!
+# !!!                                                             !!!
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 
 EXPORT_FUNCTIONS src_prepare src_unpack src_configure src_compile src_install src_test
 
