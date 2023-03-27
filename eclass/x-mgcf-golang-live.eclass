@@ -75,13 +75,13 @@ if [[ -n ${GOLANG_PKG_DEPENDENCIES} ]]; then
 fi
 
 
-# @FUNCTION: golang-live_src_fetch
+# @FUNCTION: x-mgcf-golang-live_src_fetch
 # @DESCRIPTION:
 # Fetch a go package along with its dependencies.
-golang-live_src_fetch() {
+x-mgcf-golang-live_src_fetch() {
 	debug-print-function ${FUNCTION} "$@"
 
-	[[ -z ${EGO_LIVESTORE_DIR} ]] && die "No EGO_LIVESTORE_DIR set (golang-live_src_unpack not called?)."
+	[[ -z ${EGO_LIVESTORE_DIR} ]] && die "No EGO_LIVESTORE_DIR set (x-mgcf-golang-live_src_unpack not called?)."
 
 	# Fetch the go package
 	[[ -n ${EVCS_UMASK} ]] && eumask_push ${EVCS_UMASK}
@@ -95,10 +95,10 @@ golang-live_src_fetch() {
 	[[ -n ${EVCS_UMASK} ]] && eumask_pop
 }
 
-# @FUNCTION: golang-live_src_unpack
+# @FUNCTION: x-mgcf-golang-live_src_unpack
 # @DESCRIPTION:
 # Unpack the source archive.
-golang-live_src_unpack() {
+x-mgcf-golang-live_src_unpack() {
 	debug-print-function ${FUNCNAME} "$@"
 
 	# Creates EGO_LIVESTORE_DIR if necessary.
@@ -119,65 +119,65 @@ golang-live_src_unpack() {
 	[[ -n ${EVCS_UMASK} ]] && eumask_pop
 
 	# Retrieves the GOLANG_PKG_IMPORTPATH go package.
-	golang-live_src_fetch "${GOLANG_PKG_IMPORTPATH}/${GOLANG_PKG_NAME}"/...
+	x-mgcf-golang-live_src_fetch "${GOLANG_PKG_IMPORTPATH}/${GOLANG_PKG_NAME}"/...
 
 	# Creates SOURCE directory.
 	mkdir -p "${S}" || die
 }
 
 
-# @FUNCTION: golang-live_src_prepare
+# @FUNCTION: x-mgcf-golang-live_src_prepare
 # @DESCRIPTION:
 # Prepare source code.
-golang-live_src_prepare() {
+x-mgcf-golang-live_src_prepare() {
 	debug-print-function ${FUNCNAME} "${@}"
 
 	# Sets up GoLang build environment.
-	golang_setup
+	x-mgcf-golang_setup
 
 	# Imports all go dependencies
 	ebegin "Importing all the sources in ${GOPATH}"
 		cp -r "${EGO_LIVESTORE_DIR}/src" "${GOPATH}" || die "Unable to copy sources to ${GOPATH}"
 	eend
 
-	golang-common_src_prepare
+	x-mgcf-golang-common_src_prepare
 }
 
 
-# @FUNCTION: golang-live_src_configure
+# @FUNCTION: x-mgcf-golang-live_src_configure
 # @DESCRIPTION:
 # Configure the package.
-golang-live_src_configure() {
+x-mgcf-golang-live_src_configure() {
 	debug-print-function ${FUNCNAME} "$@"
 
-	golang-common_src_configure
+	x-mgcf-golang-common_src_configure
 }
 
-# @FUNCTION: golang-live_src_compile
+# @FUNCTION: x-mgcf-golang-live_src_compile
 # @DESCRIPTION:
 # Compiles the package.
-golang-live_src_compile() {
+x-mgcf-golang-live_src_compile() {
 	debug-print-function ${FUNCNAME} "$@"
 
-	golang-common_src_compile
+	x-mgcf-golang-common_src_compile
 }
 
-# @FUNCTION: golang-live_src_install
+# @FUNCTION: x-mgcf-golang-live_src_install
 # @DESCRIPTION:
 # Installs binaries and documents from DOCS or HTML_DOCS arrays.
-golang-live_src_install() {
+x-mgcf-golang-live_src_install() {
 	debug-print-function ${FUNCNAME} "$@"
 
-	golang-common_src_install
+	x-mgcf-golang-common_src_install
 }
 
-# @FUNCTION: golang-live_src_test
+# @FUNCTION: x-mgcf-golang-live_src_test
 # @DESCRIPTION:
 # Runs the unit tests for the main package.
-golang-live_src_test() {
+x-mgcf-golang-live_src_test() {
 	debug-print-function ${FUNCNAME} "$@"
 
-	golang-common_src_test
+	x-mgcf-golang-common_src_test
 }
 
 

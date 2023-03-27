@@ -138,10 +138,10 @@ if [[ ${#GOLANG_PKG_DEPENDENCIES[@]} -gt 0 ]]; then
 fi
 
 
-# @FUNCTION: golang-single_src_unpack
+# @FUNCTION: x-mgcf-golang-single_src_unpack
 # @DESCRIPTION:
 # Unpack the source archive.
-golang-single_src_unpack() {
+x-mgcf-golang-single_src_unpack() {
 	debug-print-function ${FUNCNAME} "${@}"
 
 	default
@@ -160,52 +160,52 @@ golang-single_src_unpack() {
 }
 
 
-# @FUNCTION: golang-single_src_prepare
+# @FUNCTION: x-mgcf-golang-single_src_prepare
 # @DESCRIPTION:
 # Prepare source code.
-golang-single_src_prepare() {
+x-mgcf-golang-single_src_prepare() {
 	debug-print-function ${FUNCNAME} "$@"
 
 	# Sets up GoLang build environment.
-	golang_setup
+	x-mgcf-golang_setup
 
-	golang-common_src_prepare
+	x-mgcf-golang-common_src_prepare
 }
 
-# @FUNCTION: golang-single_src_configure
+# @FUNCTION: x-mgcf-golang-single_src_configure
 # @DESCRIPTION:
 # Configure the package.
-golang-single_src_configure() {
+x-mgcf-golang-single_src_configure() {
 	debug-print-function ${FUNCNAME} "$@"
 
-	golang-common_src_configure
+	x-mgcf-golang-common_src_configure
 }
 
-# @FUNCTION: golang-single_src_compile
+# @FUNCTION: x-mgcf-golang-single_src_compile
 # @DESCRIPTION:
 # Compiles the package.
-golang-single_src_compile() {
+x-mgcf-golang-single_src_compile() {
 	debug-print-function ${FUNCNAME} "$@"
 
-	golang-common_src_compile
+	x-mgcf-golang-common_src_compile
 }
 
-# @FUNCTION: golang-single_src_install
+# @FUNCTION: x-mgcf-golang-single_src_install
 # @DESCRIPTION:
 # Installs binaries and documents from DOCS or HTML_DOCS arrays.
-golang-single_src_install() {
+x-mgcf-golang-single_src_install() {
 	debug-print-function ${FUNCNAME} "$@"
 
-	golang-common_src_install
+	x-mgcf-golang-common_src_install
 }
 
-# @FUNCTION: golang-single_src_test
+# @FUNCTION: x-mgcf-golang-single_src_test
 # @DESCRIPTION:
 # Runs the unit tests for the main package.
-golang-single_src_test() {
+x-mgcf-golang-single_src_test() {
 	debug-print-function ${FUNCNAME} "$@"
 
-	golang-common_src_test
+	x-mgcf-golang-common_src_test
 }
 
 fi

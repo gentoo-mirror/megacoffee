@@ -337,11 +337,11 @@ _factorize_dependency_entities() {
 }
 
 
-# @FUNCTION: golang_setup
+# @FUNCTION: x-mgcf-golang_setup
 # @DESCRIPTION:
 # Determines where is the GoLang implementation and then set-up the
 # GoLang build environment.
-golang_setup() {
+x-mgcf-golang_setup() {
 	debug-print-function ${FUNCNAME} "${@}"
 
 	# NOTE: Keep /usr/bin/go as index [0] and never overwrite it,
@@ -443,10 +443,10 @@ golang_setup() {
 }
 
 
-# @FUNCTION: golang-common_src_prepare
+# @FUNCTION: x-mgcf-golang-common_src_prepare
 # @DESCRIPTION:
 # Prepare source code.
-golang-common_src_prepare() {
+x-mgcf-golang-common_src_prepare() {
 	debug-print-function ${FUNCNAME} "${@}"
 
 	pushd "${WORKDIR}" > /dev/null || die
@@ -463,7 +463,7 @@ golang-common_src_prepare() {
 			local TARGET="${GOLANG_PKG_NAME}"
 			[[ "${PN}" != "${GOLANG_PKG_NAME}" ]] && TARGET="${PN}"
 
-			golang_fix_importpath_alias \
+			x-mgcf-golang_fix_importpath_alias \
 				"${GOLANG_PKG_IMPORTPATH_ALIAS}/${TARGET}" \
 				"${GOLANG_PKG_IMPORTPATH}/${GOLANG_PKG_NAME}"
 		fi
@@ -531,7 +531,7 @@ golang-common_src_prepare() {
 						#      Example: gopkg.in/Shopify/sarama.v1 erroneously
 						#      invokes imports from github.com/shopify/sarama
 						if [[ ${destdir} != ${DEPENDENCY[importpath]} ]]; then
-							golang_fix_importpath_alias ${destdir} ${DEPENDENCY[importpath]}
+							x-mgcf-golang_fix_importpath_alias ${destdir} ${DEPENDENCY[importpath]}
 						fi
 						;;
 					bitbucket*)
@@ -545,7 +545,7 @@ golang-common_src_prepare() {
 							mv ${DEPENDENCY[project_name]}-${DEPENDENCY[revision]}* "${GOPATH}"/src/${destdir} || die
 						eend
 						;;
-					*) die "Function 'golang-common_src_prepare' doesn't support '${DEPENDENCY[importpath]}'" ;;
+					*) die "Function 'x-mgcf-golang-common_src_prepare' doesn't support '${DEPENDENCY[importpath]}'" ;;
 				esac
 			done
 
@@ -558,7 +558,7 @@ golang-common_src_prepare() {
 	# dependencies inside $S/vendor.
 	local VENDOR="${S}/vendor"
 	if [[ -d "${VENDOR}" ]]; then
-		golang_add_vendor "${VENDOR}"
+		x-mgcf-golang_add_vendor "${VENDOR}"
 		export GO15VENDOREXPERIMENT=1
 	fi
 
@@ -577,7 +577,7 @@ golang-common_src_prepare() {
 
 			local vendor="${S}/${path}/vendor"
 			if [[ -d "${vendor}" ]]; then
-				golang_add_vendor "${vendor}"
+				x-mgcf-golang_add_vendor "${vendor}"
 			fi
 		done <<< "$( echo ${GOLANG_PKG_BUILDPATH}) "
 	fi
@@ -587,7 +587,7 @@ golang-common_src_prepare() {
 	# (see github.com/tools/godep for more infos).
 	VENDOR="${S}/Godeps/_workspace"
 	if [[ -d "${VENDOR}" ]]; then
-		golang_add_vendor "${VENDOR}"
+		x-mgcf-golang_add_vendor "${VENDOR}"
 	fi
 
 	# Evaluates PATCHES array.
@@ -595,13 +595,13 @@ golang-common_src_prepare() {
 }
 
 
-# @FUNCTION: golang-common_src_configure
+# @FUNCTION: x-mgcf-golang-common_src_configure
 # @DESCRIPTION:
 # Configure the package.
-golang-common_src_configure() {
+x-mgcf-golang-common_src_configure() {
 	debug-print-function ${FUNCNAME} "${@}"
 
-	[[ ${EGO} ]] || die "No GoLang implementation set (golang_setup not called?)."
+	[[ ${EGO} ]] || die "No GoLang implementation set (x-mgcf-golang_setup not called?)."
 
 	# Defines the level of verbosity.
 	local EGO_VERBOSE="-v"
@@ -708,13 +708,13 @@ golang-common_src_configure() {
 }
 
 
-# @FUNCTION: golang-common_src_compile
+# @FUNCTION: x-mgcf-golang-common_src_compile
 # @DESCRIPTION:
 # Compiles the package.
-golang-common_src_compile() {
+x-mgcf-golang-common_src_compile() {
 	debug-print-function ${FUNCNAME} "${@}"
 
-	[[ ${EGO} ]] || die "No GoLang implementation set (golang_setup not called?)."
+	[[ ${EGO} ]] || die "No GoLang implementation set (x-mgcf-golang_setup not called?)."
 
 	# Populates env variable GOPATH with vendored workspaces (if present).
 	if [[ -n ${GOLANG_PKG_VENDOR} ]]; then
@@ -781,7 +781,7 @@ golang-common_src_compile() {
 			#einfo "cmd: |$cmd| cmd: |${cmd##*/}|"
 			[[ -n $cmd ]] || continue
 
-			golang_do_build \
+			x-mgcf-golang_do_build \
 				${EGO_BUILD_FLAGS} \
 				-o "${GOBIN}/${cmd##*/}" \
 				"${GOLANG_PKG_IMPORTPATH_ALIAS}/${GOLANG_PKG_NAME}${cmd}"
@@ -791,20 +791,20 @@ golang-common_src_compile() {
 		# then this eclass doesn't specify the output name.
 		[[ ${GOLANG_PKG_BUILDPATH##*/} != "..." ]] && EGO_BUILD_FLAGS+=" -o ${GOBIN}/${GOLANG_PKG_OUTPUT_NAME}"
 
-		golang_do_build \
+		x-mgcf-golang_do_build \
 			${EGO_BUILD_FLAGS} \
 			"${GOLANG_PKG_IMPORTPATH_ALIAS}/${GOLANG_PKG_NAME}${GOLANG_PKG_BUILDPATH}"
 	fi
 }
 
 
-# @FUNCTION: golang-common_src_install
+# @FUNCTION: x-mgcf-golang-common_src_install
 # @DESCRIPTION:
 # Installs binaries and documents from DOCS or HTML_DOCS arrays.
-golang-common_src_install() {
+x-mgcf-golang-common_src_install() {
 	debug-print-function ${FUNCNAME} "${@}"
 
-	[[ ${EGO} ]] || die "No GoLang implementation set (golang_setup not called?)."
+	[[ ${EGO} ]] || die "No GoLang implementation set (x-mgcf-golang_setup not called?)."
 
 	# Enables position-independent executables (PIE)
 	local EGO_PIE
@@ -852,13 +852,13 @@ golang-common_src_install() {
 	einstalldocs
 }
 
-# @FUNCTION: golang-common_src_test
+# @FUNCTION: x-mgcf-golang-common_src_test
 # @DESCRIPTION:
 # Runs the unit tests for the main package.
-golang-common_src_test() {
+x-mgcf-golang-common_src_test() {
 	debug-print-function ${FUNCNAME} "${@}"
 
-	[[ ${EGO} ]] || die "No GoLang implementation set (golang_setup not called?)."
+	[[ ${EGO} ]] || die "No GoLang implementation set (x-mgcf-golang_setup not called?)."
 
 	# Appends S and GOBIN to exported main paths.
 	# FIX: this is necessary for unit tests that need to invoke bins from
@@ -934,7 +934,7 @@ golang-common_src_test() {
 }
 
 
-# @FUNCTION: golang_do_build
+# @FUNCTION: x-mgcf-golang_do_build
 # @INTERNAL
 # @USAGE: <flags> <buildpath>
 # @DESCRIPTION:
@@ -944,12 +944,12 @@ golang-common_src_test() {
 #   GOLANG_PKG_LDFLAGS="-extldflags=-static"
 #   GOLANG_PKG_TAGS="netgo"
 #
-#	golang_do_build ${EGO_BUILD_FLAGS} ${GOLANG_PKG_IMPORTPATH}/${GOLANG_PKG_NAME}${GOLANG_PKG_BUILDPATH}
+#	x-mgcf-golang_do_build ${EGO_BUILD_FLAGS} ${GOLANG_PKG_IMPORTPATH}/${GOLANG_PKG_NAME}${GOLANG_PKG_BUILDPATH}
 # @CODE
-golang_do_build() {
+x-mgcf-golang_do_build() {
 	debug-print-function ${FUNCNAME} $*
 
-	[[ ${GOLANG_VERSION} ]] || die "No GoLang implementation set (golang_setup not called?)."
+	[[ ${GOLANG_VERSION} ]] || die "No GoLang implementation set (x-mgcf-golang_setup not called?)."
 
 	# Filters "=" chars from ldflags declaration.
 	# NOTE: from go1.5+ linker syntax is no more compatible with <go1.4;
@@ -982,7 +982,7 @@ golang_do_build() {
 }
 
 
-# @FUNCTION: golang_add_vendor
+# @FUNCTION: x-mgcf-golang_add_vendor
 # @INTERNAL
 # @USAGE: <path>
 # @DESCRIPTION:
@@ -990,15 +990,15 @@ golang_do_build() {
 # @CODE
 # Example
 #
-#   golang_add_vendor "${S}"/vendor
-#   golang_add_vendor "${S}"/${PN}/vendor
+#   x-mgcf-golang_add_vendor "${S}"/vendor
+#   x-mgcf-golang_add_vendor "${S}"/${PN}/vendor
 # @CODE
-golang_add_vendor() {
+x-mgcf-golang_add_vendor() {
 	debug-print-function ${FUNCNAME} $*
 
 	[[ ${1} ]] || die "${FUNCNAME}: no paths given"
 
-	[[ ${GOLANG_VERSION} ]] || die "No Golang implementation set (golang_setup not called?)."
+	[[ ${GOLANG_VERSION} ]] || die "No Golang implementation set (x-mgcf-golang_setup not called?)."
 
 	[[ ! -d "${1}" ]] && return
 
@@ -1013,7 +1013,7 @@ golang_add_vendor() {
 }
 
 
-# @FUNCTION: golang_fix_importpath_alias
+# @FUNCTION: x-mgcf-golang_fix_importpath_alias
 # @USAGE: <target> <alias>
 # @DESCRIPTION:
 # Helper functions for generating a symbolic link for import path <target> as
@@ -1028,20 +1028,20 @@ golang_add_vendor() {
 # Example:
 #
 #   src_prepare() {
-#   	golang-single_src_prepare
+#   	x-mgcf-golang-single_src_prepare
 #
-#   	golang_fix_importpath_alias \
+#   	x-mgcf-golang_fix_importpath_alias \
 #   		"github.com/GoogleCloudPlatform/gcloud-golang" \
 #   		"google.golang.org/cloud"
 #   }
 # @CODE
-golang_fix_importpath_alias() {
+x-mgcf-golang_fix_importpath_alias() {
 	debug-print-function ${FUNCNAME} "${@}"
 
 	[[ ${1} ]] || die "${FUNCNAME}: no target specified"
 	[[ ${2} ]] || die "${FUNCNAME}: no alias specified"
 
-	[[ ${EGO} ]] || die "No GoLang implementation set (golang_setup not called?)."
+	[[ ${EGO} ]] || die "No GoLang implementation set (x-mgcf-golang_setup not called?)."
 
 
 	local TARGET="${1}"
