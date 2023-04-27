@@ -1,0 +1,695 @@
+From a77b1e00416d7d946539a3c2335b42e8c81cbe54 Mon Sep 17 00:00:00 2001
+From: Akseli Lahtinen <akselmo@akselmo.dev>
+Date: Sun, 26 Feb 2023 18:37:54 +0200
+Subject: [PATCH 1/7] add m_outlineIntensity, check for outline intensity
+ before drawing
+
+---
+ kdecoration/breezedecoration.cpp | 62 ++++++++++++++++----------------
+ kdecoration/breezedecoration.h   |  2 ++
+ 2 files changed, 34 insertions(+), 30 deletions(-)
+
+diff --git a/kdecoration/breezedecoration.cpp b/kdecoration/breezedecoration.cpp
+index cc5bb75d7..699221b79 100644
+--- a/kdecoration/breezedecoration.cpp
++++ b/kdecoration/breezedecoration.cpp
+@@ -743,7 +743,7 @@ void Decoration::updateShadow()
+                          outlineColor.hslSaturationF(),
+                          qBound(0.1, outlineColor.lightnessF(), 1.0),
+                          s->isAlphaChannelSupported() ? 0.9 : 1.0);
+-    outlineColor.lightnessF() >= 0.5 ? outlineColor = outlineColor.darker(170) : outlineColor = outlineColor.lighter(170);
++    outlineColor.lightnessF() >= 0.5 ? outlineColor = outlineColor.darker(m_outlineIntensity) : outlineColor = outlineColor.lighter(m_outlineIntensity);
+ 
+     // Animated case, no cached shadow object
+     if ((m_shadowAnimation->state() == QAbstractAnimation::Running) && (m_shadowOpacity != 0.0) && (m_shadowOpacity != 1.0)) {
+@@ -821,36 +821,38 @@ QSharedPointer<KDecoration2::DecorationShadow> Decoration::createShadowObject(co
+     painter.drawRoundedRect(innerRect, m_scaledCornerRadius + 0.5, m_scaledCornerRadius + 0.5);
+ 
+     // Draw window outline
+-    const qreal outlineWidth = 1.001;
+-    const qreal penOffset = outlineWidth / 2;
+-
+-    QRectF outlineRect = innerRect + QMarginsF(penOffset, penOffset, penOffset, penOffset);
+-    qreal cornerSize = m_scaledCornerRadius * 2;
+-    QRectF cornerRect(outlineRect.x(), outlineRect.y(), cornerSize, cornerSize);
+-    QPainterPath outlinePath;
+-
+-    outlinePath.arcMoveTo(cornerRect, 180);
+-    outlinePath.arcTo(cornerRect, 180, -90);
+-    cornerRect.moveTopRight(outlineRect.topRight());
+-    outlinePath.arcTo(cornerRect, 90, -90);
+-
+-    // Check if border size is "no borders" or "no side-borders"
+-    if (borderSize(true) == 0) {
+-        outlinePath.lineTo(outlineRect.bottomRight());
+-        outlinePath.lineTo(outlineRect.bottomLeft());
+-    } else {
+-        cornerRect.moveBottomRight(outlineRect.bottomRight());
+-        outlinePath.arcTo(cornerRect, 0, -90);
+-        cornerRect.moveBottomLeft(outlineRect.bottomLeft());
+-        outlinePath.arcTo(cornerRect, 270, -90);
+-    }
+-    outlinePath.closeSubpath();
++    if (m_outlineIntensity > 0) {
++        const qreal outlineWidth = 1.001;
++        const qreal penOffset = outlineWidth / 2;
++
++        QRectF outlineRect = innerRect + QMarginsF(penOffset, penOffset, penOffset, penOffset);
++        qreal cornerSize = m_scaledCornerRadius * 2;
++        QRectF cornerRect(outlineRect.x(), outlineRect.y(), cornerSize, cornerSize);
++        QPainterPath outlinePath;
++
++        outlinePath.arcMoveTo(cornerRect, 180);
++        outlinePath.arcTo(cornerRect, 180, -90);
++        cornerRect.moveTopRight(outlineRect.topRight());
++        outlinePath.arcTo(cornerRect, 90, -90);
++
++        // Check if border size is "no borders" or "no side-borders"
++        if (borderSize(true) == 0) {
++            outlinePath.lineTo(outlineRect.bottomRight());
++            outlinePath.lineTo(outlineRect.bottomLeft());
++        } else {
++            cornerRect.moveBottomRight(outlineRect.bottomRight());
++            outlinePath.arcTo(cornerRect, 0, -90);
++            cornerRect.moveBottomLeft(outlineRect.bottomLeft());
++            outlinePath.arcTo(cornerRect, 270, -90);
++        }
++        outlinePath.closeSubpath();
+ 
+-    painter.setPen(QPen(outlineColor, outlineWidth));
+-    painter.setBrush(Qt::NoBrush);
+-    painter.setCompositionMode(QPainter::CompositionMode_Source);
+-    painter.setRenderHint(QPainter::Antialiasing);
+-    painter.drawPath(outlinePath);
++        painter.setPen(QPen(outlineColor, outlineWidth));
++        painter.setBrush(Qt::NoBrush);
++        painter.setCompositionMode(QPainter::CompositionMode_Source);
++        painter.setRenderHint(QPainter::Antialiasing);
++        painter.drawPath(outlinePath);
++    }
+ 
+     painter.end();
+ 
+diff --git a/kdecoration/breezedecoration.h b/kdecoration/breezedecoration.h
+index 826e396d8..0cb7864d9 100644
+--- a/kdecoration/breezedecoration.h
++++ b/kdecoration/breezedecoration.h
+@@ -131,6 +131,8 @@ private:
+     qreal m_opacity = 0;
+     qreal m_shadowOpacity = 0;
+ 
++    int m_outlineIntensity = 170;
++
+     //*frame corner radius, scaled according to DPI
+     qreal m_scaledCornerRadius = 3;
+ 
+-- 
+GitLab
+
+
+From 31a801b59d7cb33a4c1d944ee0ab49637f5c7dc0 Mon Sep 17 00:00:00 2001
+From: Akseli Lahtinen <akselmo@akselmo.dev>
+Date: Sun, 26 Feb 2023 20:08:52 +0200
+Subject: [PATCH 2/7] add outline intensity setting
+
+---
+ kdecoration/breezedecoration.cpp              |  5 ++--
+ kdecoration/breezedecoration.h                |  2 --
+ kdecoration/breezesettingsdata.kcfg           |  6 +++++
+ kdecoration/config/breezeconfigwidget.cpp     |  6 +++++
+ .../config/ui/breezeconfigurationui.ui        | 25 ++++++++++++++++++-
+ 5 files changed, 39 insertions(+), 5 deletions(-)
+
+diff --git a/kdecoration/breezedecoration.cpp b/kdecoration/breezedecoration.cpp
+index 699221b79..d6ae873e5 100644
+--- a/kdecoration/breezedecoration.cpp
++++ b/kdecoration/breezedecoration.cpp
+@@ -743,7 +743,8 @@ void Decoration::updateShadow()
+                          outlineColor.hslSaturationF(),
+                          qBound(0.1, outlineColor.lightnessF(), 1.0),
+                          s->isAlphaChannelSupported() ? 0.9 : 1.0);
+-    outlineColor.lightnessF() >= 0.5 ? outlineColor = outlineColor.darker(m_outlineIntensity) : outlineColor = outlineColor.lighter(m_outlineIntensity);
++    outlineColor.lightnessF() >= 0.5 ? outlineColor = outlineColor.darker(m_internalSettings->outlineIntensity())
++                                     : outlineColor = outlineColor.lighter(m_internalSettings->outlineIntensity());
+ 
+     // Animated case, no cached shadow object
+     if ((m_shadowAnimation->state() == QAbstractAnimation::Running) && (m_shadowOpacity != 0.0) && (m_shadowOpacity != 1.0)) {
+@@ -821,7 +822,7 @@ QSharedPointer<KDecoration2::DecorationShadow> Decoration::createShadowObject(co
+     painter.drawRoundedRect(innerRect, m_scaledCornerRadius + 0.5, m_scaledCornerRadius + 0.5);
+ 
+     // Draw window outline
+-    if (m_outlineIntensity > 0) {
++    if (m_internalSettings->outlineIntensity() > 0) {
+         const qreal outlineWidth = 1.001;
+         const qreal penOffset = outlineWidth / 2;
+ 
+diff --git a/kdecoration/breezedecoration.h b/kdecoration/breezedecoration.h
+index 0cb7864d9..826e396d8 100644
+--- a/kdecoration/breezedecoration.h
++++ b/kdecoration/breezedecoration.h
+@@ -131,8 +131,6 @@ private:
+     qreal m_opacity = 0;
+     qreal m_shadowOpacity = 0;
+ 
+-    int m_outlineIntensity = 170;
+-
+     //*frame corner radius, scaled according to DPI
+     qreal m_scaledCornerRadius = 3;
+ 
+diff --git a/kdecoration/breezesettingsdata.kcfg b/kdecoration/breezesettingsdata.kcfg
+index f57f61fe4..616035f9e 100644
+--- a/kdecoration/breezesettingsdata.kcfg
++++ b/kdecoration/breezesettingsdata.kcfg
+@@ -35,6 +35,12 @@
+         <default>false</default>
+     </entry>
+ 
++    <entry name="OutlineIntensity" type = "Int">
++      <default>170</default>
++      <min>0</min>
++      <max>200</max>
++    </entry>
++
+   </group>
+ 
+   <group name="Windeco">
+diff --git a/kdecoration/config/breezeconfigwidget.cpp b/kdecoration/config/breezeconfigwidget.cpp
+index f75e1b3b7..e1e0dd63a 100644
+--- a/kdecoration/config/breezeconfigwidget.cpp
++++ b/kdecoration/config/breezeconfigwidget.cpp
+@@ -38,6 +38,7 @@ ConfigWidget::ConfigWidget(QWidget *parent, const QVariantList &args)
+     connect(m_ui.shadowSize, SIGNAL(currentIndexChanged(int)), SLOT(updateChanged()));
+     connect(m_ui.shadowStrength, SIGNAL(valueChanged(int)), SLOT(updateChanged()));
+     connect(m_ui.shadowColor, &KColorButton::changed, this, &ConfigWidget::updateChanged);
++    connect(m_ui.outlineIntensity, SIGNAL(valueChanged(int)), SLOT(updateChanged()));
+ 
+     // track exception changes
+     connect(m_ui.exceptions, &ExceptionListWidget::changed, this, &ConfigWidget::updateChanged);
+@@ -69,6 +70,7 @@ void ConfigWidget::load()
+ 
+     m_ui.shadowStrength->setValue(qRound(qreal(m_internalSettings->shadowStrength() * 100) / 255));
+     m_ui.shadowColor->setColor(m_internalSettings->shadowColor());
++    m_ui.outlineIntensity->setValue(m_internalSettings->outlineIntensity());
+ 
+     // load exceptions
+     ExceptionList exceptions;
+@@ -94,6 +96,7 @@ void ConfigWidget::save()
+     m_internalSettings->setShadowSize(m_ui.shadowSize->currentIndex());
+     m_internalSettings->setShadowStrength(qRound(qreal(m_ui.shadowStrength->value() * 255) / 100));
+     m_internalSettings->setShadowColor(m_ui.shadowColor->color());
++    m_internalSettings->setOutlineIntensity(m_ui.outlineIntensity->value());
+ 
+     // save configuration
+     m_internalSettings->save();
+@@ -136,6 +139,7 @@ void ConfigWidget::defaults()
+     m_ui.shadowSize->setCurrentIndex(m_internalSettings->shadowSize());
+     m_ui.shadowStrength->setValue(qRound(qreal(m_internalSettings->shadowStrength() * 100) / 255));
+     m_ui.shadowColor->setColor(m_internalSettings->shadowColor());
++    m_ui.outlineIntensity->setValue(m_internalSettings->outlineIntensity());
+ }
+ 
+ //_______________________________________________
+@@ -167,6 +171,8 @@ void ConfigWidget::updateChanged()
+         modified = true;
+     } else if (m_ui.shadowColor->color() != m_internalSettings->shadowColor()) {
+         modified = true;
++    } else if (m_ui.outlineIntensity->value() != m_internalSettings->outlineIntensity()) {
++        modified = true;
+ 
+         // exceptions
+     } else if (m_ui.exceptions->isChanged()) {
+diff --git a/kdecoration/config/ui/breezeconfigurationui.ui b/kdecoration/config/ui/breezeconfigurationui.ui
+index f29e38c13..6d1f6a7b2 100644
+--- a/kdecoration/config/ui/breezeconfigurationui.ui
++++ b/kdecoration/config/ui/breezeconfigurationui.ui
+@@ -290,7 +290,30 @@
+        <item row="2" column="1">
+         <widget class="KColorButton" name="shadowColor"/>
+        </item>
+-       <item row="3" column="0" colspan="3">
++       <item row="3" column="0">
++        <widget class="QLabel" name="label_6">
++         <property name="text">
++          <string comment="outline intensity">Outline intensity</string>
++         </property>
++         <property name="alignment">
++          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
++         </property>
++         <property name="buddy">
++          <cstring>outlineIntensity</cstring>
++         </property>
++        </widget>
++       </item>
++       <item row="3" column="1">
++        <widget class="QSpinBox" name="outlineIntensity">
++         <property name="minimum">
++          <number>0</number>
++         </property>
++         <property name="maximum">
++          <number>200</number>
++         </property>
++        </widget>
++       </item>
++       <item row="4" column="0" colspan="3">
+         <spacer name="verticalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+-- 
+GitLab
+
+
+From 70ab16974547b351f50ef977afe05a37c28b289a Mon Sep 17 00:00:00 2001
+From: Akseli Lahtinen <akselmo@akselmo.dev>
+Date: Wed, 1 Mar 2023 20:52:55 +0200
+Subject: [PATCH 3/7] Set outline intensity default to 100, add slider
+
+---
+ kdecoration/breezedecoration.cpp              |  2 +-
+ kdecoration/breezesettingsdata.kcfg           |  2 +-
+ .../config/ui/breezeconfigurationui.ui        | 21 ++++++++++++++++---
+ 3 files changed, 20 insertions(+), 5 deletions(-)
+
+diff --git a/kdecoration/breezedecoration.cpp b/kdecoration/breezedecoration.cpp
+index d6ae873e5..3e2b145d5 100644
+--- a/kdecoration/breezedecoration.cpp
++++ b/kdecoration/breezedecoration.cpp
+@@ -822,7 +822,7 @@ QSharedPointer<KDecoration2::DecorationShadow> Decoration::createShadowObject(co
+     painter.drawRoundedRect(innerRect, m_scaledCornerRadius + 0.5, m_scaledCornerRadius + 0.5);
+ 
+     // Draw window outline
+-    if (m_internalSettings->outlineIntensity() > 0) {
++    if (m_internalSettings->outlineIntensity() > 100) {
+         const qreal outlineWidth = 1.001;
+         const qreal penOffset = outlineWidth / 2;
+ 
+diff --git a/kdecoration/breezesettingsdata.kcfg b/kdecoration/breezesettingsdata.kcfg
+index 616035f9e..88db8e643 100644
+--- a/kdecoration/breezesettingsdata.kcfg
++++ b/kdecoration/breezesettingsdata.kcfg
+@@ -37,7 +37,7 @@
+ 
+     <entry name="OutlineIntensity" type = "Int">
+       <default>170</default>
+-      <min>0</min>
++      <min>100</min>
+       <max>200</max>
+     </entry>
+ 
+diff --git a/kdecoration/config/ui/breezeconfigurationui.ui b/kdecoration/config/ui/breezeconfigurationui.ui
+index 6d1f6a7b2..ef130a5cf 100644
+--- a/kdecoration/config/ui/breezeconfigurationui.ui
++++ b/kdecoration/config/ui/breezeconfigurationui.ui
+@@ -293,7 +293,7 @@
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+-          <string comment="outline intensity">Outline intensity</string>
++          <string comment="outline intensity">Outline intensity:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+@@ -304,13 +304,28 @@
+         </widget>
+        </item>
+        <item row="3" column="1">
+-        <widget class="QSpinBox" name="outlineIntensity">
++        <widget class="QSlider" name="outlineIntensity">
+          <property name="minimum">
+-          <number>0</number>
++          <number>100</number>
+          </property>
+          <property name="maximum">
+           <number>200</number>
+          </property>
++         <property name="singleStep">
++          <number>10</number>
++         </property>
++         <property name="pageStep">
++          <number>10</number>
++         </property>
++         <property name="orientation">
++          <enum>Qt::Horizontal</enum>
++         </property>
++         <property name="tickPosition">
++          <enum>QSlider::TicksBelow</enum>
++         </property>
++         <property name="tickInterval">
++          <number>10</number>
++         </property>
+         </widget>
+        </item>
+        <item row="4" column="0" colspan="3">
+-- 
+GitLab
+
+
+From 4bf3cd06c2cc938d161c872bba76427ff993fd2d Mon Sep 17 00:00:00 2001
+From: Akseli Lahtinen <akselmo@akselmo.dev>
+Date: Thu, 2 Mar 2023 12:59:49 +0200
+Subject: [PATCH 4/7] better intensity values
+
+---
+ kdecoration/breezedecoration.cpp               |  2 +-
+ kdecoration/breezesettingsdata.kcfg            |  4 ++--
+ kdecoration/config/ui/breezeconfigurationui.ui | 10 +++++-----
+ 3 files changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/kdecoration/breezedecoration.cpp b/kdecoration/breezedecoration.cpp
+index 3e2b145d5..abc805e70 100644
+--- a/kdecoration/breezedecoration.cpp
++++ b/kdecoration/breezedecoration.cpp
+@@ -822,7 +822,7 @@ QSharedPointer<KDecoration2::DecorationShadow> Decoration::createShadowObject(co
+     painter.drawRoundedRect(innerRect, m_scaledCornerRadius + 0.5, m_scaledCornerRadius + 0.5);
+ 
+     // Draw window outline
+-    if (m_internalSettings->outlineIntensity() > 100) {
++    if (m_internalSettings->outlineIntensity() > 110) {
+         const qreal outlineWidth = 1.001;
+         const qreal penOffset = outlineWidth / 2;
+ 
+diff --git a/kdecoration/breezesettingsdata.kcfg b/kdecoration/breezesettingsdata.kcfg
+index 88db8e643..1d3db8bd2 100644
+--- a/kdecoration/breezesettingsdata.kcfg
++++ b/kdecoration/breezesettingsdata.kcfg
+@@ -37,8 +37,8 @@
+ 
+     <entry name="OutlineIntensity" type = "Int">
+       <default>170</default>
+-      <min>100</min>
+-      <max>200</max>
++      <min>110</min>
++      <max>250</max>
+     </entry>
+ 
+   </group>
+diff --git a/kdecoration/config/ui/breezeconfigurationui.ui b/kdecoration/config/ui/breezeconfigurationui.ui
+index ef130a5cf..3385c97e9 100644
+--- a/kdecoration/config/ui/breezeconfigurationui.ui
++++ b/kdecoration/config/ui/breezeconfigurationui.ui
+@@ -306,16 +306,16 @@
+        <item row="3" column="1">
+         <widget class="QSlider" name="outlineIntensity">
+          <property name="minimum">
+-          <number>100</number>
++          <number>110</number>
+          </property>
+          <property name="maximum">
+-          <number>200</number>
++          <number>250</number>
+          </property>
+          <property name="singleStep">
+-          <number>10</number>
++          <number>20</number>
+          </property>
+          <property name="pageStep">
+-          <number>10</number>
++          <number>20</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+@@ -324,7 +324,7 @@
+           <enum>QSlider::TicksBelow</enum>
+          </property>
+          <property name="tickInterval">
+-          <number>10</number>
++          <number>20</number>
+          </property>
+         </widget>
+        </item>
+-- 
+GitLab
+
+
+From 0f31f23648463ce4c0aa9e90fb74deccff273bc3 Mon Sep 17 00:00:00 2001
+From: Akseli Lahtinen <akselmo@akselmo.dev>
+Date: Thu, 2 Mar 2023 18:13:14 +0200
+Subject: [PATCH 5/7] change from slider to combobox
+
+---
+ kdecoration/breezedecoration.cpp              | 25 ++++++++--
+ kdecoration/breezesettingsdata.kcfg           | 14 ++++--
+ kdecoration/config/breezeconfigwidget.cpp     | 14 ++++--
+ .../config/ui/breezeconfigurationui.ui        | 48 ++++++++++---------
+ 4 files changed, 67 insertions(+), 34 deletions(-)
+
+diff --git a/kdecoration/breezedecoration.cpp b/kdecoration/breezedecoration.cpp
+index abc805e70..eb4a7d0ec 100644
+--- a/kdecoration/breezedecoration.cpp
++++ b/kdecoration/breezedecoration.cpp
+@@ -111,6 +111,25 @@ inline CompositeShadowParams lookupShadowParams(int size)
+         return s_shadowParams[3];
+     }
+ }
++
++inline int lookupOutlineIntensity(int intensity)
++{
++    switch (intensity) {
++    case Breeze::InternalSettings::OutlineOff:
++        return 100;
++    case Breeze::InternalSettings::OutlineLow:
++        return 130;
++    case Breeze::InternalSettings::OutlineMedium:
++        return 170;
++    case Breeze::InternalSettings::OutlineHigh:
++        return 210;
++    case Breeze::InternalSettings::OutlineMaximum:
++        return 250;
++    default:
++        // Fallback to the Medium intensity.
++        return 170;
++    }
++}
+ }
+ 
+ namespace Breeze
+@@ -743,8 +762,8 @@ void Decoration::updateShadow()
+                          outlineColor.hslSaturationF(),
+                          qBound(0.1, outlineColor.lightnessF(), 1.0),
+                          s->isAlphaChannelSupported() ? 0.9 : 1.0);
+-    outlineColor.lightnessF() >= 0.5 ? outlineColor = outlineColor.darker(m_internalSettings->outlineIntensity())
+-                                     : outlineColor = outlineColor.lighter(m_internalSettings->outlineIntensity());
++    outlineColor.lightnessF() >= 0.5 ? outlineColor = outlineColor.darker(lookupOutlineIntensity(m_internalSettings->outlineIntensity()))
++                                     : outlineColor = outlineColor.lighter(lookupOutlineIntensity(m_internalSettings->outlineIntensity()));
+ 
+     // Animated case, no cached shadow object
+     if ((m_shadowAnimation->state() == QAbstractAnimation::Running) && (m_shadowOpacity != 0.0) && (m_shadowOpacity != 1.0)) {
+@@ -822,7 +841,7 @@ QSharedPointer<KDecoration2::DecorationShadow> Decoration::createShadowObject(co
+     painter.drawRoundedRect(innerRect, m_scaledCornerRadius + 0.5, m_scaledCornerRadius + 0.5);
+ 
+     // Draw window outline
+-    if (m_internalSettings->outlineIntensity() > 110) {
++    if (lookupOutlineIntensity(m_internalSettings->outlineIntensity()) > 110) {
+         const qreal outlineWidth = 1.001;
+         const qreal penOffset = outlineWidth / 2;
+ 
+diff --git a/kdecoration/breezesettingsdata.kcfg b/kdecoration/breezesettingsdata.kcfg
+index 1d3db8bd2..559983d79 100644
+--- a/kdecoration/breezesettingsdata.kcfg
++++ b/kdecoration/breezesettingsdata.kcfg
+@@ -35,12 +35,16 @@
+         <default>false</default>
+     </entry>
+ 
+-    <entry name="OutlineIntensity" type = "Int">
+-      <default>170</default>
+-      <min>110</min>
+-      <max>250</max>
++    <entry name="OutlineIntensity" type = "Enum">
++      <choices>
++          <choice name="OutlineOff"/>
++          <choice name="OutlineLow"/>
++          <choice name="OutlineMedium"/>
++          <choice name="OutlineHigh"/>
++          <choice name="OutlineMaximum"/>
++      </choices>
++      <default>OutlineMedium</default>
+     </entry>
+-
+   </group>
+ 
+   <group name="Windeco">
+diff --git a/kdecoration/config/breezeconfigwidget.cpp b/kdecoration/config/breezeconfigwidget.cpp
+index e1e0dd63a..d57c08463 100644
+--- a/kdecoration/config/breezeconfigwidget.cpp
++++ b/kdecoration/config/breezeconfigwidget.cpp
+@@ -70,7 +70,13 @@ void ConfigWidget::load()
+ 
+     m_ui.shadowStrength->setValue(qRound(qreal(m_internalSettings->shadowStrength() * 100) / 255));
+     m_ui.shadowColor->setColor(m_internalSettings->shadowColor());
+-    m_ui.outlineIntensity->setValue(m_internalSettings->outlineIntensity());
++
++    // load outline intensity
++    if (m_internalSettings->outlineIntensity() <= InternalSettings::OutlineMaximum) {
++        m_ui.outlineIntensity->setCurrentIndex(m_internalSettings->outlineIntensity());
++    } else {
++        m_ui.outlineIntensity->setCurrentIndex(InternalSettings::OutlineMedium);
++    }
+ 
+     // load exceptions
+     ExceptionList exceptions;
+@@ -96,7 +102,7 @@ void ConfigWidget::save()
+     m_internalSettings->setShadowSize(m_ui.shadowSize->currentIndex());
+     m_internalSettings->setShadowStrength(qRound(qreal(m_ui.shadowStrength->value() * 255) / 100));
+     m_internalSettings->setShadowColor(m_ui.shadowColor->color());
+-    m_internalSettings->setOutlineIntensity(m_ui.outlineIntensity->value());
++    m_internalSettings->setOutlineIntensity(m_ui.outlineIntensity->currentIndex());
+ 
+     // save configuration
+     m_internalSettings->save();
+@@ -139,7 +145,7 @@ void ConfigWidget::defaults()
+     m_ui.shadowSize->setCurrentIndex(m_internalSettings->shadowSize());
+     m_ui.shadowStrength->setValue(qRound(qreal(m_internalSettings->shadowStrength() * 100) / 255));
+     m_ui.shadowColor->setColor(m_internalSettings->shadowColor());
+-    m_ui.outlineIntensity->setValue(m_internalSettings->outlineIntensity());
++    m_ui.outlineIntensity->setCurrentIndex(m_internalSettings->outlineIntensity());
+ }
+ 
+ //_______________________________________________
+@@ -171,7 +177,7 @@ void ConfigWidget::updateChanged()
+         modified = true;
+     } else if (m_ui.shadowColor->color() != m_internalSettings->shadowColor()) {
+         modified = true;
+-    } else if (m_ui.outlineIntensity->value() != m_internalSettings->outlineIntensity()) {
++    } else if (m_ui.outlineIntensity->currentIndex() != m_internalSettings->outlineIntensity()) {
+         modified = true;
+ 
+         // exceptions
+diff --git a/kdecoration/config/ui/breezeconfigurationui.ui b/kdecoration/config/ui/breezeconfigurationui.ui
+index 3385c97e9..e0283c93a 100644
+--- a/kdecoration/config/ui/breezeconfigurationui.ui
++++ b/kdecoration/config/ui/breezeconfigurationui.ui
+@@ -304,28 +304,32 @@
+         </widget>
+        </item>
+        <item row="3" column="1">
+-        <widget class="QSlider" name="outlineIntensity">
+-         <property name="minimum">
+-          <number>110</number>
+-         </property>
+-         <property name="maximum">
+-          <number>250</number>
+-         </property>
+-         <property name="singleStep">
+-          <number>20</number>
+-         </property>
+-         <property name="pageStep">
+-          <number>20</number>
+-         </property>
+-         <property name="orientation">
+-          <enum>Qt::Horizontal</enum>
+-         </property>
+-         <property name="tickPosition">
+-          <enum>QSlider::TicksBelow</enum>
+-         </property>
+-         <property name="tickInterval">
+-          <number>20</number>
+-         </property>
++        <widget class="QComboBox" name="outlineIntensity">
++         <item>
++          <property name="text">
++           <string comment="@item:inlistbox Outline intensity:">Off</string>
++          </property>
++         </item>
++         <item>
++          <property name="text">
++           <string comment="@item:inlistbox Outline intensity:">Low</string>
++          </property>
++         </item>
++         <item>
++          <property name="text">
++           <string comment="@item:inlistbox Outline intensity:">Medium</string>
++          </property>
++         </item>
++         <item>
++          <property name="text">
++           <string comment="@item:inlistbox Outline intensity:">High</string>
++          </property>
++         </item>
++         <item>
++          <property name="text">
++           <string comment="@item:inlistbox Outline intensity:">Maximum</string>
++          </property>
++         </item>
+         </widget>
+        </item>
+        <item row="4" column="0" colspan="3">
+-- 
+GitLab
+
+
+From 2a41e807948af3cca43af814323f6d6e5295fb93 Mon Sep 17 00:00:00 2001
+From: Akseli Lahtinen <akselmo@akselmo.dev>
+Date: Fri, 3 Mar 2023 00:49:14 +0200
+Subject: [PATCH 6/7] rename shadow tab to shadows and outline
+
+---
+ kdecoration/config/ui/breezeconfigurationui.ui | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/kdecoration/config/ui/breezeconfigurationui.ui b/kdecoration/config/ui/breezeconfigurationui.ui
+index e0283c93a..a760f7b71 100644
+--- a/kdecoration/config/ui/breezeconfigurationui.ui
++++ b/kdecoration/config/ui/breezeconfigurationui.ui
+@@ -193,13 +193,13 @@
+      </widget>
+      <widget class="QWidget" name="tab_4">
+       <attribute name="title">
+-       <string>Shadows</string>
++       <string>Shadows and Outline</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+-          <string>Si&amp;ze:</string>
++          <string>Shadow size:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+@@ -241,7 +241,7 @@
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+-          <string comment="strength of the shadow (from transparent to opaque)">S&amp;trength:</string>
++          <string comment="strength of the shadow (from transparent to opaque)">Shadow strength:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+@@ -280,7 +280,7 @@
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+-          <string>Color:</string>
++          <string>Shadow color:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+-- 
+GitLab
+
+
+From d66927cb4994e91052f4e2441309e9354762d59c Mon Sep 17 00:00:00 2001
+From: Nate Graham <nate@kde.org>
+Date: Fri, 3 Mar 2023 20:17:54 +0000
+Subject: [PATCH 7/7] change 110 to 100
+
+---
+ kdecoration/breezedecoration.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/kdecoration/breezedecoration.cpp b/kdecoration/breezedecoration.cpp
+index eb4a7d0ec..410943f2a 100644
+--- a/kdecoration/breezedecoration.cpp
++++ b/kdecoration/breezedecoration.cpp
+@@ -841,7 +841,7 @@ QSharedPointer<KDecoration2::DecorationShadow> Decoration::createShadowObject(co
+     painter.drawRoundedRect(innerRect, m_scaledCornerRadius + 0.5, m_scaledCornerRadius + 0.5);
+ 
+     // Draw window outline
+-    if (lookupOutlineIntensity(m_internalSettings->outlineIntensity()) > 110) {
++    if (lookupOutlineIntensity(m_internalSettings->outlineIntensity()) > 100) {
+         const qreal outlineWidth = 1.001;
+         const qreal penOffset = outlineWidth / 2;
+ 
+-- 
+GitLab
+

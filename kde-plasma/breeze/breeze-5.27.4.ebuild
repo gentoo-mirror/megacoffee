@@ -13,8 +13,8 @@ HOMEPAGE="https://invent.kde.org/plasma/breeze"
 
 LICENSE="GPL-2" # TODO: CHECK
 SLOT="5"
-KEYWORDS="amd64 ~arm arm64 ~loong ~ppc64 ~riscv x86"
-IUSE=""
+KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc64 ~riscv ~x86"
+IUSE="patch_outline"
 
 RDEPEND="
 	>=dev-qt/qtdbus-${QTMIN}:5
@@ -39,3 +39,11 @@ PDEPEND="
 	>=kde-frameworks/breeze-icons-${KFMIN}:5
 	>=kde-plasma/kde-cli-tools-${PVCUT}:5
 "
+
+src_prepare() {
+	if use patch_outline; then
+		eapply "${FILESDIR}/5.27.4_breeze_mr292_outline_intensity_setting.patch"
+	fi
+
+	cmake_src_prepare
+}
