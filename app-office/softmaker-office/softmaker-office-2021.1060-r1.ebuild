@@ -158,7 +158,7 @@ src_install() {
 	# TODO: split to separate files?
 	# TODO: separate SoftMaker Office's own from generic definitions? (generic = MS Office etc.)
 	insinto /usr/share/mime/application/
-	doins /opt/softmaker-office/mime/softmaker-office-2021.xml
+	doins ${EXTRACTED_INNER_ARCHIVE}/mime/softmaker-office-2021.xml
 	
 	## icons (see original copy_icons function)
 	# TODO: don't install what we don't need when separated

@@ -1,4 +1,4 @@
-# Copyright 1999-2021 Gentoo Foundation
+# Copyright 1999-2023 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -14,7 +14,7 @@ LICENSE="SoftMakerOffice"
 SLOT="0"
 KEYWORDS="~amd64"
 
-# .dep dependencies as of 20 Oct 2021, version 2021-1034:
+# .deb dependencies as of 4 Jun 2023, version 2021-1064:
 #
 #   DEBIAN                               GENTOO
 #
@@ -158,7 +158,7 @@ src_install() {
 	# TODO: split to separate files?
 	# TODO: separate SoftMaker Office's own from generic definitions? (generic = MS Office etc.)
 	insinto /usr/share/mime/application/
-	doins /opt/softmaker-office/mime/softmaker-office-2021.xml
+	doins ${EXTRACTED_INNER_ARCHIVE}/mime/softmaker-office-2021.xml
 	
 	## icons (see original copy_icons function)
 	# TODO: don't install what we don't need when separated
