@@ -14,7 +14,7 @@ LICENSE="SoftMakerOffice"
 SLOT="0"
 KEYWORDS="~amd64"
 
-# .deb dependencies as of 27 Dev 2022, version 2021-1062:
+# .deb dependencies as of 27 Dec 2022, version 2021-1062:
 #
 #   DEBIAN                               GENTOO
 #
