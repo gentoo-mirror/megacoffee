@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile install postinst postrm prepare unpack
+DEPEND=!app-office/softmaker-office app-arch/tar app-arch/xz-utils
+DESCRIPTION=SoftMaker Office NX - an office suite featuring a word processor (TextMaker), spreadsheets (PlanMaker) and slides software (Presentations)
+EAPI=8
+HOMEPAGE=https://www.softmaker.com/en/softmaker-office
+INHERIT=desktop xdg-utils
+KEYWORDS=~amd64
+LICENSE=SoftMakerOffice
+RDEPEND=!app-office/softmaker-office app-arch/tar app-arch/xz-utils net-misc/curl sys-libs/glibc sys-devel/gcc virtual/opengl dev-libs/glib media-libs/gstreamer media-libs/gst-plugins-base x11-libs/libX11 x11-libs/libXext x11-libs/libXmu x11-libs/libXrandr x11-libs/libXrender
+SLOT=0
+SRC_URI=https://www.softmaker.net/down/softmaker-office-nx-1200-amd64.tgz
+_eclasses_=desktop	021728fdc1b03b36357dbc89489e0f0d	xdg-utils	baea6080dd821f5562d715887954c9d3
+_md5_=ad1e1bb4981f57b8c0602bde1745dcae
