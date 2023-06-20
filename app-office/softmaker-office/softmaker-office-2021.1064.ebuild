@@ -30,6 +30,8 @@ KEYWORDS="~amd64"
 #   libxrender1                       => x11-libs/libXrender
 
 DEPEND="
+	!app-office/softmaker-office-nx
+
 	app-arch/tar
 	app-arch/xz-utils
 "
