@@ -6,7 +6,7 @@
 
 EAPI=8
 
-inherit linux-info linux-mod
+inherit linux-info linux-mod udev
 
 DESCRIPTION="Desktop Video - drivers and tools for products by Blackmagic Design including DeckLink, UltraStudio and Intensity"
 HOMEPAGE="http://www.blackmagicdesign.com/"
@@ -258,8 +258,7 @@ pkg_postinst() {
 	einfo ""
 	einfo "Licenses can be found in: ${finalinstalldir}/usr/share/doc/"
 	einfo ""
-	einfo "We are reloading udev rules now..."
-	/bin/udevadm control --reload-rules || einfo " ... failed, you may want to check this before rebooting!"
+	udev_reload || ewarn "Reloading udev rules failed, you may want to check this before rebooting!"
 
 	#if kernel_is -gt $OFFICIAL_COMPAT_MAX_MAJOR $OFFICIAL_COMPAT_MAX_MINOR && use patch_compat; then
 	#	#      12345678901234567890123456789012345678901234567890123456789012345678901234567890
@@ -284,6 +283,8 @@ pkg_postinst() {
 }
 
 pkg_postrm() {
+	udev_reload || ewarn "Reloading udev rules failed, you may want to check this before rebooting!"
+
 	# kernel module
 	linux-mod_pkg_postrm
 }
