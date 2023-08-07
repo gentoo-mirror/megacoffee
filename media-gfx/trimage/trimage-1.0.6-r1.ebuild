@@ -1,4 +1,4 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2023 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="8"
@@ -33,7 +33,7 @@ DEPEND="
 	<app-arch/advancecomp-3
 	
 	>=media-gfx/jpegoptim-1.4
-	<media-gfx/jpegoptim-1.5
+	<media-gfx/jpegoptim-1.6
 "
 
 PATCHES="${FILESDIR}/${P}_*.patch"
