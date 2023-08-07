@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Foundation
+# Copyright 1999-2023 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 # TODOs:
@@ -8,8 +8,8 @@ EAPI=8
 
 inherit xdg-utils
 
-DESKTOP_VIDEO_SHORT_VERSION="12.4.1"
-DESKTOP_VIDEO_VERSION="12.4.1a15"
+DESKTOP_VIDEO_SHORT_VERSION="12.5"
+DESKTOP_VIDEO_VERSION="12.5a15"
 MEDIA_EXPRESS_VERSION="3.8.1a4"
 
 DESCRIPTION="Media Express - Blackmagic Design's tool for media capture, organization and playback"
