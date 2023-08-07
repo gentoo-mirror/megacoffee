@@ -8,6 +8,6 @@ LICENSE=BlackmagicDesktopVideo
 RDEPEND=>=media-libs/blackmagic-desktop-video-12.4.1 dev-libs/glib:2 media-libs/alsa-lib media-libs/fontconfig media-libs/freetype media-libs/libglvnd sys-apps/dbus sys-devel/gcc sys-libs/glibc sys-libs/libcxx sys-libs/libcxxabi virtual/glu x11-libs/libICE x11-libs/libSM x11-libs/libX11 x11-libs/libXext x11-libs/libXrender x11-libs/libxcb
 RESTRICT=fetch splitdebug strip
 SLOT=0
-SRC_URI=Blackmagic_Desktop_Video_Linux_12.4.1.tar.gz
+SRC_URI=Blackmagic_Desktop_Video_Linux_12.5.tar.gz
 _eclasses_=xdg-utils	baea6080dd821f5562d715887954c9d3
-_md5_=f7ed81a6f27e45666bef61e9dd4f6b82
+_md5_=7f0de72638eddf3796d0a830e119d808
