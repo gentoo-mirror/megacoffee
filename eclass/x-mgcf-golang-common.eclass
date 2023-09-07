@@ -8,7 +8,7 @@
 # @AUTHOR:
 # Mauro Toffanin <toffanin.mauro@gmail.com>
 # @BLURB: Base eclass for GoLang packages
-# @SUPPORTED_EAPIS: 7
+# @SUPPORTED_EAPIS: 8
 # @DESCRIPTION:
 # This eclass provides functionalities which are used by golang-single.eclass,
 # golang-live.eclass, and as well as from ebuilds.
@@ -16,7 +16,8 @@
 # This eclass should not be inherited directly from an ebuild.
 # Instead, you should inherit golang-single or golang-live for GoLang packages.
 
-inherit eutils multiprocessing
+inherit desktop edos2unix estack multilib \
+	preserve-libs strip-linguas toolchain-funcs vcs-clean wrapper multiprocessing
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -50,7 +51,7 @@ _GOLANG_BASE_ECLASS=1
 
 # Silences repoman warnings.
 case "${EAPI:-0}" in
-	7)
+	8)
 		case "${GOLANG_PKG_DEPEND_ON_GO_SUBSLOT:-yes}" in
 			yes)
 				GO_DEPEND="dev-lang/go:0="
