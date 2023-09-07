@@ -3,7 +3,7 @@
 
 # based on net-misc/asterisk-app_rxfax ebuild provided by mva and luke-jr overlays
 
-EAPI=6
+EAPI=8
 
 inherit git-r3
 
