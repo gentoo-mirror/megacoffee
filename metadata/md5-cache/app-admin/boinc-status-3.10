@@ -1,9 +1,9 @@
 DEFINED_PHASES=install unpack
 DESCRIPTION=bash script to monitor BOINC status
-EAPI=7
+EAPI=8
 HOMEPAGE=http://www.jpmr.org/
 KEYWORDS=~x86 ~amd64
 LICENSE=GPL-2
 SLOT=0
 SRC_URI=mirror://sourceforge/boinc/boinc-3.10.tar.xz -> boinc-status-3.10.tar.xz
-_md5_=e688a83cc5d58e5666c9e56e9c095287
+_md5_=528785615461383fa38fe75454c8333c

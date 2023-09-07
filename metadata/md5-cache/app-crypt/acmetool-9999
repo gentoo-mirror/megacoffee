@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile configure install prepare test unpack
+DEPEND=dev-lang/go sys-libs/libcap dev-lang/go:0=
+DESCRIPTION=command line tool for automatically acquiring certificates from ACME servers
+EAPI=8
+HOMEPAGE=https://github.com/hlandau/acmetool
+INHERIT=x-mgcf-golang-live
+IUSE=doc debug pie
+LICENSE=MIT
+RDEPEND=dev-lang/go sys-libs/libcap
+RESTRICT=mirror strip
+SLOT=0
+_eclasses_=desktop	021728fdc1b03b36357dbc89489e0f0d	edos2unix	33e347e171066657f91f8b0c72ec8773	estack	c61c368a76fdf3a82fdf8dbaebea3804	multilib	c19072c3cd7ac5cb21de013f7e9832e0	toolchain-funcs	862d337d98edb576796827be2c6b11ca	preserve-libs	21162ec96c87041004a75348d97342dd	strip-linguas	ac3ee41ee2d31d8c41a77c0838320cc7	vcs-clean	d271b7bc7e6a009758d7d4ef749174e3	wrapper	4a1902f969e5718126434fc35f3a0d9c	multiprocessing	b4e253ab22cef7b1085e9b67c7a3b730	x-mgcf-golang-common	06dabe97672070768212b347c3d56e58	x-mgcf-golang-live	ea168c802a26ab23f6c2183a20b01ad1
+_md5_=93b1d5dc39c0b917343ecae1622c187c
