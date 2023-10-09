@@ -5,7 +5,7 @@ app-crypt/acmetool 0.2.2 9999: command line tool for automatically acquiring cer
 app-misc/qutescoop 2.2_pre20201118 9999: A status monitor for VATSIM and other online flight simulation networks.
 app-office/softmaker-office 2021.1034-r1 2021.1060-r1 2021.1062-r1 2021.1064 2024.1200: SoftMaker Office - an office suite featuring a word processor (TextMaker), spreadsheets (PlanMaker) and slides software (Presentations)
 app-office/softmaker-office-nx 1200 1202: SoftMaker Office NX - an office suite featuring a word processor (TextMaker), spreadsheets (PlanMaker) and slides software (Presentations)
-kde-plasma/breeze 5.27.4 5.27.5 5.27.7: Breeze visual style for the Plasma desktop
+kde-plasma/breeze 5.27.4 5.27.5 5.27.7 5.27.8-r1: Breeze visual style for the Plasma desktop
 media-gfx/trimage 1.0.6-r1: GUI for PNG and JPEG optimization via optipng, pngcrush, advpng and jpegoptim
 media-libs/blackmagic-desktop-video 12.2.2 12.4.1 12.5: Desktop Video - drivers and tools for products by Blackmagic Design including DeckLink, UltraStudio and Intensity
 media-libs/blackmagic-desktop-video-sdk 12.2.2 12.4.1 12.5.1: Desktop Video SDK - headers, examples and documentation necessary to develop/compile custom applications for products by Blackmagic Design (also known as DeckLink SDK)
