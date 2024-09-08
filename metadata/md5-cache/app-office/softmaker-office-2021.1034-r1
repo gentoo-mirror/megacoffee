@@ -9,5 +9,5 @@ LICENSE=SoftMakerOffice
 RDEPEND=!app-office/softmaker-office-nx app-arch/tar app-arch/xz-utils net-misc/curl sys-libs/glibc sys-devel/gcc virtual/opengl x11-libs/libX11 x11-libs/libXext x11-libs/libXmu x11-libs/libXrandr x11-libs/libXrender
 SLOT=0
 SRC_URI=https://www.softmaker.net/down/softmaker-office-2021-1034-amd64.tgz
-_eclasses_=desktop	021728fdc1b03b36357dbc89489e0f0d	xdg-utils	baea6080dd821f5562d715887954c9d3
+_eclasses_=desktop	56973babb9c5f19cab0eeb53ece644c6	xdg-utils	5465aed08f1dfc2a75f14cbea4272961
 _md5_=8d7f7fdadd1431d7d31ef1a4b51bbdbd
