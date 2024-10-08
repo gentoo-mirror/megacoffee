@@ -9,5 +9,5 @@ RDEPEND=>=media-libs/blackmagic-desktop-video-12.4.1 dev-libs/glib:2 media-libs/
 RESTRICT=fetch splitdebug strip
 SLOT=0
 SRC_URI=Blackmagic_Desktop_Video_Linux_12.5.tar.gz
-_eclasses_=xdg-utils	5465aed08f1dfc2a75f14cbea4272961
+_eclasses_=xdg-utils	42869b3c8d86a70ef3cf75165a395e09
 _md5_=7f0de72638eddf3796d0a830e119d808
