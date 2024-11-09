@@ -1,0 +1,27 @@
+diff --git a/src/Settings.cpp b/src/Settings.cpp
+index 040fa65..4f21092 100644
+--- a/src/Settings.cpp
++++ b/src/Settings.cpp
+@@ -1,5 +1,7 @@
+ #include "Settings.h"
+ 
++#include <QStandardPaths>
++
+ #include "GuiMessage.h"
+ #include "Whazzup.h"
+ #include "dialogs/AirportDetails.h"
+@@ -198,6 +200,14 @@ void Settings::importFromFile(QString fileName) {
+  * @returns fully qualified path to the 'application data directory'.
+  **/
+ QString Settings::dataDirectory(const QString &composeFilePath) {
++    // try local data directory first, use if it exists
++    QString appLocalDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
++    QDir appLocalDataDir(appLocalDataPath);
++    if (appLocalDataDir.exists()) {
++        return QString("%1/%2").arg(appLocalDataPath, composeFilePath);
++    }
++
++    // fall back to installation directory
+     return QString("%1/%2")
+         .arg(QCoreApplication::applicationDirPath(), composeFilePath);
+ }
