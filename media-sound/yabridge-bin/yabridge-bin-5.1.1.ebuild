@@ -3,7 +3,7 @@
 
 EAPI=8
 
-DESCRIPTION="A bridge to use Windows VST Plugins on Linux via wine; binary release."
+DESCRIPTION="A bridge to use Windows VST and CLAP plugins on Linux via wine; binary release."
 HOMEPAGE="https://github.com/robbert-vdh/yabridge"
 
 SRC_URI="https://github.com/robbert-vdh/yabridge/releases/download/${PV}/yabridge-${PV}.tar.gz"
