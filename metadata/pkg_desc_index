@@ -10,6 +10,6 @@ media-gfx/trimage 1.0.6-r1: GUI for PNG and JPEG optimization via optipng, pngcr
 media-libs/blackmagic-desktop-video 12.2.2 12.4.1 12.5: Desktop Video - drivers and tools for products by Blackmagic Design including DeckLink, UltraStudio and Intensity
 media-libs/blackmagic-desktop-video-sdk 12.2.2 12.4.1 12.5.1: Desktop Video SDK - headers, examples and documentation necessary to develop/compile custom applications for products by Blackmagic Design (also known as DeckLink SDK)
 media-libs/mlt 7.24.0-r1: Open source multimedia framework for television broadcasting
-media-sound/yabridge-bin 5.1.1: A bridge to use Windows VST Plugins on Linux via wine; binary release.
+media-sound/yabridge-bin 5.1.1: A bridge to use Windows VST and CLAP plugins on Linux via wine; binary release.
 media-video/blackmagic-media-express 3.7 3.8.1-r1: Media Express - Blackmagic Design's tool for media capture, organization and playback
 net-misc/asterisk-softmodem 20160525: Asterisk application providing a V.21/V.22/V.23 compatible soft-modem for inbound connections
