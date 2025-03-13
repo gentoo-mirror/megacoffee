@@ -138,7 +138,7 @@ x-mgcf-golang-live_src_prepare() {
 	# Imports all go dependencies
 	ebegin "Importing all the sources in ${GOPATH}"
 		cp -r "${EGO_LIVESTORE_DIR}/src" "${GOPATH}" || die "Unable to copy sources to ${GOPATH}"
-	eend
+	eend $?
 
 	x-mgcf-golang-common_src_prepare
 }
