@@ -440,7 +440,7 @@ x-mgcf-golang_setup() {
 		debug-print "${FUNCNAME}: GOBIN = ${GOBIN}"
 		debug-print "${FUNCNAME}: EGO_SRC = ${EGO_SRC}"
 		debug-print "${FUNCNAME}: CGO_ENABLED = ${CGO_ENABLED}"
-	eend
+	eend 0
 }
 
 
@@ -522,7 +522,7 @@ x-mgcf-golang-common_src_prepare() {
 					github*)
 						ebegin "${message}"
 							mv ${DEPENDENCY[project_name]}-${DEPENDENCY[revision]}* "${GOPATH}"/src/${destdir} || die
-						eend
+						eend $?
 
 						# FIX: sometimes the source code inside an importpath alias
 						#      (such as gopkg.in/mylib.v1) invokes imports from
@@ -539,12 +539,12 @@ x-mgcf-golang-common_src_prepare() {
 						#einfo "path: ${DEPENDENCY[author_name]}-${DEPENDENCY[project_name]}-${DEPENDENCY[revision]}"
 						ebegin "${message}"
 							mv ${DEPENDENCY[author_name]}-${DEPENDENCY[project_name]}-${DEPENDENCY[revision]}* "${GOPATH}"/src/${destdir} || die
-						eend
+						eend $?
 						;;
 					code.google*)
 						ebegin "${message}"
 							mv ${DEPENDENCY[project_name]}-${DEPENDENCY[revision]}* "${GOPATH}"/src/${destdir} || die
-						eend
+						eend $?
 						;;
 					*) die "Function 'x-mgcf-golang-common_src_prepare' doesn't support '${DEPENDENCY[importpath]}'" ;;
 				esac
@@ -678,12 +678,12 @@ x-mgcf-golang-common_src_configure() {
 	if [[ -d "${S}"/Godeps/_workspace/pkg ]]; then
 		ebegin "Cleaning up pre-built object files in Godep workspace"
 			rm -r "${S}"/Godeps/_workspace/pkg || die
-		eend
+		eend $?
 	fi
 	if [[ -d "${S}"/Godeps/_workspace/bin ]]; then
 		ebegin "Cleaning up executables in Godep workspace"
 			rm -r "${S}"/Godeps/_workspace/bin || die
-		eend
+		eend $?
 	fi
 
 
@@ -704,7 +704,7 @@ x-mgcf-golang-common_src_configure() {
 	if [[ -n ${GOLANG_PKG_STATIK} ]]; then
 		ebegin "${ESTATIK} $GOLANG_PKG_STATIK"
 			${ESTATIK} $GOLANG_PKG_STATIK || die
-		eend
+		eend $?
 	fi
 }
 
@@ -732,7 +732,7 @@ x-mgcf-golang-common_src_compile() {
 			debug-print "$FUNCNAME: GOPATH: Adding vendor path ${path}"
 			ebegin "- ${path//${S}\//}"
 				GOPATH="${GOPATH}:$( echo ${path} )"
-			eend
+			eend $?
 		done
 
 		export GOPATH
@@ -1007,7 +1007,7 @@ x-mgcf-golang_add_vendor() {
 	#if [[ ! -d "${1}"/src ]]; then
 	#	ebegin "Fixing $1"
 	#		ln -s "${1}" "${1}"/src || die
-	#	eend
+	#	eend $?
 	#fi
 
 	GOLANG_PKG_VENDOR+=(${1})
@@ -1055,7 +1055,7 @@ x-mgcf-golang_fix_importpath_alias() {
 		ln -s "${GOPATH}/src/${TARGET}" \
 			"${GOPATH}/src/${ALIAS}" \
 			|| die
-	eend
+	eend $?
 }
 
 
