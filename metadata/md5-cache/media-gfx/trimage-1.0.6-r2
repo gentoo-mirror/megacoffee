@@ -1,6 +1,6 @@
 BDEPEND=>=dev-vcs/git-1.8.2.1[curl] python_targets_python3_11? ( dev-lang/python:3.11 ) >=dev-python/setuptools-78.1.0[python_targets_python3_11(-)?]
 DEFINED_PHASES=compile configure install prepare test unpack
-DEPEND=dev-python/PyQt5[python_targets_python3_11(-)?] >=media-gfx/optipng-0.7 <media-gfx/optipng-0.8 >=media-gfx/pngcrush-1 <media-gfx/pngcrush-2 >=app-arch/advancecomp-2 <app-arch/advancecomp-3 >=media-gfx/jpegoptim-1.4 <media-gfx/jpegoptim-1.6
+DEPEND=dev-python/pyqt5[python_targets_python3_11(-)?] >=media-gfx/optipng-0.7 <media-gfx/optipng-0.8 >=media-gfx/pngcrush-1 <media-gfx/pngcrush-2 >=app-arch/advancecomp-2 <app-arch/advancecomp-3 >=media-gfx/jpegoptim-1.4 <media-gfx/jpegoptim-1.6
 DESCRIPTION=GUI for PNG and JPEG optimization via optipng, pngcrush, advpng and jpegoptim
 EAPI=8
 HOMEPAGE=http://trimage.org/
@@ -13,4 +13,4 @@ RDEPEND=python_targets_python3_11? ( dev-lang/python:3.11 )
 REQUIRED_USE=|| ( python_targets_python3_11 )
 SLOT=0
 _eclasses_=git-r3	875eb471682d3e1f18da124be97dcc81	toolchain-funcs	f9d71a6efe9d083aec750dd13968e169	flag-o-matic	b892042b2667b8ac69ec8a2571dc290a	out-of-source-utils	dbf9e34ee8964084651e25907fa8f52c	multibuild	4650a65187015567b4e041bb9bfdb364	multilib	b2a329026f2e404e9e371097dda47f96	multiprocessing	1e32df7deee68372153dca65f4a7c21f	ninja-utils	2df4e452cea39a9ec8fb543ce059f8d6	python-utils-r1	de71d9571aa267f353b9e8ab4666732e	python-r1	0e15b2ab9cfc87d7474678201d6bca38	distutils-r1	2a874f6b13be509cff13de8e37085386
-_md5_=d0c426e98e8c1b37a9d3f62f3b179996
+_md5_=9e0341208a1920db1b4da650b270d574
