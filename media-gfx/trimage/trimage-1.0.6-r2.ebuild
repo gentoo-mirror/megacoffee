@@ -21,7 +21,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 DEPEND="
-	dev-python/PyQt5[${PYTHON_USEDEP}]
+	dev-python/pyqt5[${PYTHON_USEDEP}]
 	
 	>=media-gfx/optipng-0.7
 	<media-gfx/optipng-0.8
