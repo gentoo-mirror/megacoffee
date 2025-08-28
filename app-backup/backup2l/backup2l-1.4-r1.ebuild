@@ -20,16 +20,22 @@
 # > 	#exeinto /usr/local
 # > 	exeinto /usr/bin
 
+# added EAPI, description, dependency to bash, fixed download from SourceForge (1.4 is not available on GitHub)
+
+EAPI="8"
+
+DESCRIPTION="light-weight versatile backup tool written in Bash"
 HOMEPAGE="http://sourceforge.net/projects/backup2l/"
-SRC_URI="mirror://sourceforge/backup2l/${P/-/_}.tar.gz"
+SRC_URI="https://sourceforge.net/projects/backup2l/files/backup2l/1.4/backup2l_1.4.tar.gz/download -> ${P/-/_}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~x86 ~amd64"
 IUSE=""
+RESTRICT="mirror"
 
 DEPEND=""
-RDEPEND=""
+RDEPEND="app-shells/bash"
 
 src_install() {
 	
