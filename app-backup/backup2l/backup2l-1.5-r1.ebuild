@@ -20,16 +20,22 @@
 # > 	#exeinto /usr/local
 # > 	exeinto /usr/bin
 
-HOMEPAGE="http://sourceforge.net/projects/backup2l/"
-SRC_URI="mirror://sourceforge/backup2l/${P/-/_}.tar.gz"
+# added EAPI, description, dependency to bash, changed homepage and download to GitHub without mirroring
+
+EAPI="8"
+
+DESCRIPTION="light-weight versatile backup tool written in Bash"
+HOMEPAGE="https://github.com/gkiefer/backup2l"
+SRC_URI="https://github.com/gkiefer/backup2l/archive/refs/tags/v${PV}.tar.gz -> ${P}_github.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~x86 ~amd64"
 IUSE=""
+RESTRICT="mirror"
 
 DEPEND=""
-RDEPEND=""
+RDEPEND="app-shells/bash"
 
 src_install() {
 	
