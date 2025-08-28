@@ -1,0 +1,11 @@
+DEFINED_PHASES=install postinst
+DESCRIPTION=light-weight versatile backup tool written in Bash
+EAPI=8
+HOMEPAGE=http://sourceforge.net/projects/backup2l/
+KEYWORDS=~x86 ~amd64
+LICENSE=GPL-2
+RDEPEND=app-shells/bash
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://sourceforge.net/projects/backup2l/files/backup2l/1.4/backup2l_1.4.tar.gz/download -> backup2l_1.4.tar.gz
+_md5_=d30139620ee9ff3b1c515d7dcf8692f6

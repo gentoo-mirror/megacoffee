@@ -1,0 +1,11 @@
+DEFINED_PHASES=install postinst
+DESCRIPTION=light-weight versatile backup tool written in Bash
+EAPI=8
+HOMEPAGE=https://github.com/gkiefer/backup2l
+KEYWORDS=~x86 ~amd64
+LICENSE=GPL-2
+RDEPEND=app-shells/bash
+RESTRICT=mirror
+SLOT=0
+SRC_URI=https://github.com/gkiefer/backup2l/archive/refs/tags/v1.5.tar.gz -> backup2l-1.5_github.tar.gz
+_md5_=7ad496a41e65c57c99f3fa6e51573d4b
